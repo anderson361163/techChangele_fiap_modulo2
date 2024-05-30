@@ -9,6 +9,14 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+// Configuração do Handlebars
+app.engine('.hbs', exphbs({
+  extname: '.hbs',
+  layoutsDir: path.join(__dirname, 'views/layouts'), // Diretório para os layouts
+  defaultLayout: 'main', // Layout padrão
+  partialsDir: path.join(__dirname, 'views/partials') // Diretório para os partials
+}));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
