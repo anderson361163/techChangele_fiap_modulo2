@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
 });*/
 
 router.get('/', function(req, res, next) {
-  res.render('inicio', { title: 'Express' });
+  res.render('login', { title: 'Express' });
 });
 
 module.exports = router;

@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const { create } = require('express-handlebars');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -10,14 +11,14 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 // Configuração do Handlebars
-app.engine('.hbs', exphbs({
+const hbs = create({
   extname: '.hbs',
   layoutsDir: path.join(__dirname, 'views/layouts'), // Diretório para os layouts
-  defaultLayout: 'main', // Layout padrão
+  defaultLayout: 'layout', // Layout padrão
   partialsDir: path.join(__dirname, 'views/partials') // Diretório para os partials
-}));
+});
 
-// view engine setup
+app.engine('.hbs', hbs.engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
