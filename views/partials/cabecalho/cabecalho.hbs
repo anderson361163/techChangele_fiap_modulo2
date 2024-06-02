@@ -1,8 +1,7 @@
 <nav>
-    <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-        <li><a href="#">Link 4</a></li>
-    </ul>
+  <ul>
+    {{#each links}}
+      <li><a href="{{this.href}}">{{this.text}}</a></li>
+    {{/each}}
+  </ul>
 </nav>

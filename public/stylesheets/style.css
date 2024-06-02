@@ -34,6 +34,7 @@ nav li a:hover {
 }
 
 .content {
-  margin-left: 200px;
+  margin-left: 220px; /* Considerando a largura do menu */
+  margin-top: 60px; /* Margem superior para compensar a altura do cabeçalho */
   padding: 20px;
 }

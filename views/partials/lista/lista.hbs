@@ -1,0 +1,35 @@
+{{> cabecalho/cabecalho}}
+<div class="content">
+
+
+    <table id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each people}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{age}}</td>
+                <td>{{city}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/Portuguese-Brasil.json"
+            }
+        });
+    });
+</script>
+
+
+</div>
