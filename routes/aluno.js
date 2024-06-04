@@ -21,7 +21,6 @@ const data = {
 router.get('/', function(req, res, next) {
   res.render('partials/aluno/lista/lista', 
     { 
-      //...links,
       ...data,
       title: 'Fiap Blog',
     }

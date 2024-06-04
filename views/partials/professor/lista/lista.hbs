@@ -1,6 +1,26 @@
 {{> cabecalho/cabecalho}}
 <div class="content">
 
+    <div class="grid p-5">
+        <form class="form-control">
+
+            <div>
+                <label class="form-label">Título: </label>
+                <input type="text" class="form-control">
+            </div>
+
+            <div>
+                <label class="form-label">Conteudo: </label>
+                <textarea type="text" class="form-control"></textarea>
+            </div>
+
+            <div class="container">
+                <input type="submit" class="btn btn-primary" value="Salvar">
+                <input type="reset" class="btn btn-warning" value="Limpar">
+            </div>
+
+        </form>
+    </div>
 
     <table id="myTable" class="display">
         <thead>
@@ -16,8 +36,8 @@
             <tr>
                 <td>{{titulo}}</td>
                 <td>{{conteudo}}</td>
-                <td><a class=""></a></td>
-                <td><a class="" value="Excluir"></a></td>
+                <td><a class="btn btn-warning" onClick="alterar({{id}})">Alterar</a></td>
+                <td><a class="btn btn-danger" onClick="excluir({{id}})">Excluir</a></td>
             </tr>
             {{/each}}
         </tbody>
@@ -31,6 +51,22 @@
             }
         });
     });
+
+    function excluir(id){
+        /*
+        previamente um alerta 
+        */
+
+        Swal.fire({
+            title: "Aviso!",
+            text: "Você realmente deseja excluir este post?",
+            icon: "warning"
+        });
+
+
+        
+    }
+
 </script>
 
 
