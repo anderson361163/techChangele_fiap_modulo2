@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const connection = require('../db');
+//const connection = require('../db');
 
 const links = {
   links: [
@@ -17,8 +17,9 @@ const data = {
   ]
 };
 
+/*
 router.get('/', function(req, res, next) {
-  res.render('partials/lista/lista', 
+  res.render('login', 
     { 
       ...links,
       ...data,
@@ -26,15 +27,6 @@ router.get('/', function(req, res, next) {
     }   
     );
 });
-
-router.get('/lista', function(req, res, next) {
-  res.render('login', 
-    { 
-      ...links,
-      title: 'Fiap Blog',
-    }
-    );
-});
-
+*/
 
 module.exports = router;

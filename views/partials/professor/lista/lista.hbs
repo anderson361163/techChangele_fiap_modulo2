@@ -1,0 +1,37 @@
+{{> cabecalho/cabecalho}}
+<div class="content">
+
+
+    <table id="myTable" class="display">
+        <thead>
+            <tr>
+                <th>Titulo</th>
+                <th>Conteudo</th>
+                <th>Alterar</th>
+                <th>Excluir</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each people}}
+            <tr>
+                <td>{{titulo}}</td>
+                <td>{{conteudo}}</td>
+                <td><a class=""></a></td>
+                <td><a class="" value="Excluir"></a></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.5/i18n/Portuguese-Brasil.json"
+            }
+        });
+    });
+</script>
+
+
+</div>

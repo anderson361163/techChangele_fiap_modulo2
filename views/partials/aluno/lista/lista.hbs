@@ -1,21 +1,20 @@
-{{> cabecalho/cabecalho}}
-<div class="content">
+<div class="p-5">
 
 
     <table id="myTable" class="display">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Age</th>
-                <th>City</th>
+                <th>Título</th>
+                <th>Contudo</th>
+                <th>Ver</th>
             </tr>
         </thead>
         <tbody>
             {{#each people}}
             <tr>
-                <td>{{name}}</td>
-                <td>{{age}}</td>
-                <td>{{city}}</td>
+                <td>{{titulo}}</td>
+                <td>{{conteudo}}</td>
+                <td><a class="btn btn-primary">Ver</a></td>
             </tr>
             {{/each}}
         </tbody>
@@ -29,7 +28,17 @@
             }
         });
     });
+
+    function verMensagem(){
+
+        /*
+        VAI ABRIR UM MODAL EM BOOSTRAP AQUI
+        */
+
+    }
+
 </script>
+
 
 
 </div>
