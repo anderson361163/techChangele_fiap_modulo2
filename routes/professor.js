@@ -4,9 +4,9 @@ var router = express.Router();
 
 const data = {
   people: [
-      { titulo: "Aviso 1", conteudo: "Mensagem 1" },
-      { titulo: "Aviso 2", conteudo: "Mensagem 2" },
-      { titulo: "Aviso 3", conteudo: "Mensagem 3"}
+      { id: 1, titulo: "Aviso 1", conteudo: "Mensagem 1" },
+      { id: 2, titulo: "Aviso 2", conteudo: "Mensagem 2" },
+      { id: 3, titulo: "Aviso 3", conteudo: "Mensagem 3"}
   ]
 };
 
