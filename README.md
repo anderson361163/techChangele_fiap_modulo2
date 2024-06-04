@@ -29,9 +29,9 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 
 # REQUISITOS TÉCNICOS
 
-- [ ]  Back-end em Node.js:
-- [ ]  Implementação do servidor usando Node.js.
-- [ ]  Utilização de frameworks como Express para roteamento e middleware.
+- [ x ]  Back-end em Node.js:
+- [ x ]  Implementação do servidor usando Node.js.
+- [ x ]  Utilização de frameworks como Express para roteamento e middleware.
 - [ ]  Persistência de Dados:
 - [ ]  Utilização de um sistema de banco de dados (por exemplo, MongoDB, PostgreSQL).
 - [ ]  Implementação de modelos de dados adequados para as postagens.
