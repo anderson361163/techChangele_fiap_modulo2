@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+
+  #Banco de dados
+  db:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fiap_blog
+      MYSQL_USER: fiap_blog
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks: 
+      - fiap
+
+  #aplicação 
+  fiap_blog:
+    build: .
+    container_name: fiap_blog
+    environment:
+      DB_HOST: db
+      DB_USER: fiap_blog
+      DB_PASSWORD: root
+      DB_NAME: fiap_blog
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+    networks: 
+      - fiap
+
+volumes:
+  mysql_data:
+
+networks:
+  fiap: 

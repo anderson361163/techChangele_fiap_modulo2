@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { create } = require('express-handlebars');
-//const mysql = require('mysql');
+const mysql = require('mysql');
 
 var indexRouter = require('./routes/index');
 var alunoRouter = require('./routes/aluno');
