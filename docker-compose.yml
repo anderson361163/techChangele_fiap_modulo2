@@ -4,17 +4,16 @@ services:
 
   #Banco de dados
   db:
-    image: mysql:latest
-    container_name: mysql-container
+    image: postgres:latest
+    container_name: postgres-container
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: fiap_blog
-      MYSQL_USER: fiap_blog
-      MYSQL_PASSWORD: root
+      POSTGRES_DB: fiap_blog
+      POSTGRES_USER: fiap_blog
+      POSTGRES_PASSWORD: root
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     networks: 
       - fiap
 
@@ -37,7 +36,7 @@ services:
       - fiap
 
 volumes:
-  mysql_data:
+  postgres_data:
 
 networks:
   fiap: 

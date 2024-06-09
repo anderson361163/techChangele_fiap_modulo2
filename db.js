@@ -1,27 +1,16 @@
+require('dotenv').config();
+const express = require('express');
+const { Pool } = require('pg');
+const app = express();
+const port = 3000;
 
-const mysql = require('@mysql/xdevapi');
-
-const connection = mysql.getSession({
-    host: 'localhost',
-    user: 'fiap_blog',
-    password: 'root',
-    database: 'fiap_blog'
+// Configuração do pool de conexão
+const pool = new Pool({
+  user: 'fiap_blog',
+  host: 'localhost',
+  database: 'root',
+  password: 'root',
+  port: 5432, 
 });
 
-
-async function conexao(){
-    await connection;
-}
-
-
-
-/*
-connection.connect((err) => {
-    if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err);
-        return;
-    }
-    console.log('Conexão bem-sucedida ao banco de dados MySQL');
-});
-*/
-module.exports = connection;
+module.exports = pool;

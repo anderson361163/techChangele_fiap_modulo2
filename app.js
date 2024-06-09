@@ -4,7 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { create } = require('express-handlebars');
-const mysql = require('mysql');
 
 var indexRouter = require('./routes/index');
 var alunoRouter = require('./routes/aluno');
@@ -30,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/', indexRouter);
+app.use('/', indexRouter);
 app.use('/posts', alunoRouter);
 app.use('/posts', professorRouter);
 

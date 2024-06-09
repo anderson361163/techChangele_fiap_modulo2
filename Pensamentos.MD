@@ -7,10 +7,6 @@
 docker compose up -d
 ```
 
-Mysql
-```
-npm i @mysql/xdevapi
-```
 
 # paginas de autenticacao
 

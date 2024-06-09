@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const connection = require('../db');
+const alunoService = require('../service/alunoService');
+
 
 const links = {
   links: [
@@ -18,13 +19,21 @@ const data = {
 };
 
 
-router.get('/', function(req, res, next) {
-  res.render('partials/aluno/lista/lista', 
-    { 
+router.get('/', async function(req, res, next) {
+
+  try {
+    const avisos = await alunoService.getAllAvisos();
+    const data = {
+      people: avisos
+    };
+    res.render('partials/aluno/lista/lista', {
       ...data,
       title: 'Fiap Blog',
-    }
-    );
+    });
+  } catch (err) {
+    next(err);
+  }
+
 });
 
 
