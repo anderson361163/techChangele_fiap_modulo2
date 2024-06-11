@@ -1,4 +1,4 @@
-const pool = require('../db');
+const pool = require('../sequelize');
 const model = require('../models/Post');
 
 const getAllAvisos = async () => {

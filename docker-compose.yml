@@ -1,42 +1,15 @@
 version: '3.8'
-
 services:
-
-  #Banco de dados
-  db:
+  database:
     image: postgres:latest
     container_name: postgres-container
     environment:
-      POSTGRES_DB: fiap_blog
-      POSTGRES_USER: fiap_blog
-      POSTGRES_PASSWORD: root
+      - "POSTGRES_DB=fiap_blog"
+      - "POSTGRES_USER=fiap_blog"
+      - "POSTGRES_PASSWORD=root"
     ports:
-      - "5432:5432"
+      - "5441:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks: 
-      - fiap
-
-  #aplicação 
-  fiap_blog:
-    build: .
-    container_name: fiap_blog
-    environment:
-      DB_HOST: db
-      DB_USER: fiap_blog
-      DB_PASSWORD: root
-      DB_NAME: fiap_blog
-    ports:
-      - "3001:3000"
-    depends_on:
-      - db
-    volumes:
-      - .:/usr/src/app
-    networks: 
-      - fiap
-
 volumes:
-  postgres_data:
-
-networks:
-  fiap: 
+    postgres_data:

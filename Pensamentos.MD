@@ -7,6 +7,10 @@
 docker compose up -d
 ```
 
+Limpa tudo
+```
+docker system prune
+```
 
 # paginas de autenticacao
 
