@@ -1,6 +1,6 @@
 // models/Post.js
 
-const { DataTypes } = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 const sequelize = require('../sequelize');
 
 const Post = sequelize.define('Post', {
