@@ -9,11 +9,11 @@
             </tr>
         </thead>
         <tbody>
-            {{#each people}}
+            {{#each posts}}
             <tr>
-                <td>{{titulo}}</td>
-                <td>{{conteudo}}</td>
-                <td><a class="btn btn-primary" onClick="visualizar({{id}})">Ver</a></td>
+                <td>{{posts.titulo}}</td>
+                <td>{{posts.conteudo}}</td>
+                <td><a class="btn btn-primary" onClick="visualizar({{posts.id}})">Ver</a></td>
             </tr>
             {{/each}}
         </tbody>

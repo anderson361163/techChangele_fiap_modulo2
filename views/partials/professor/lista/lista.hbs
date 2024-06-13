@@ -1,16 +1,16 @@
 <div class="p-5">
 
     <div class="grid p-5">
-        <form class="form-control">
+        <form class="form-control" action="/posts/admin" method="POST">
 
             <div>
                 <label class="form-label">Título: </label>
-                <input type="text" class="form-control">
+                <input type="text" name="titulo" class="form-control">
             </div>
 
             <div>
                 <label class="form-label">Conteudo: </label>
-                <textarea type="text" class="form-control"></textarea>
+                <textarea type="text" name="conteudo" class="form-control"></textarea>
             </div>
 
             <div class="container">
@@ -31,12 +31,12 @@
             </tr>
         </thead>
         <tbody>
-            {{#each people}}
+            {{#each posts}}
             <tr>
-                <td>{{titulo}}</td>
-                <td>{{conteudo}}</td>
-                <td><a class="btn btn-warning" onClick="alterar({{id}})">Alterar</a></td>
-                <td><a class="btn btn-danger" onClick="excluir({{id}})">Excluir</a></td>
+                <td>{{posts.titulo}}</td>
+                <td>{{posts.conteudo}}</td>
+                <td><a class="btn btn-warning" onClick="alterar({{posts.id}})">Alterar</a></td>
+                <td><a class="btn btn-danger" onClick="excluir({{posts.id}})">Excluir</a></td>
             </tr>
             {{/each}}
         </tbody>
