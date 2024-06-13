@@ -1,9 +1,16 @@
-const pool = require('../sequelize');
-const model = require('../models/Post');
+const sequelize = require('../config/sequelize');
+const Post = require('../models/Post'); // Importe o modelo Post corretamente
 
 const getAllAvisos = async () => {
-  const result = await model.query('SELECT id, titulo, conteudo FROM Post');
-  return result.rows;
+  try {
+    const avisos = await Post.findAll({
+      attributes: ['id', 'titulo', 'conteudo'], // Especifique apenas os atributos desejados
+    });
+    return avisos;
+  } catch (error) {
+    console.error("Error fetching avisos:", error);
+    throw error;
+  }
 };
 
 module.exports = {

@@ -4,12 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const { create } = require('express-handlebars');
+const sequelize = require('./config/sequelize');
+const Post = require('./models/Post');
 
 var indexRouter = require('./routes/index');
 var alunoRouter = require('./routes/aluno');
 var professorRouter = require('./routes/professor');
 
 var app = express();
+const port = process.env.PORT || 3000; 
 
 // Configuração do Handlebars
 const hbs = create({
@@ -32,6 +35,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/posts', alunoRouter);
 app.use('/posts', professorRouter);
+
+// Função para iniciar o servidor
+async function startServer() { // Recebe `port` como parâmetro
+  try {
+    // Sincronize o banco de dados
+    await sequelize.sync({ force: false }); // 'force: false' para não recriar tabelas em produção
+    console.log("Database synchronized successfully.");
+
+    // Inicie o servidor Express
+    app.listen(() => {
+      console.log(`Server is running on http://localhost:3000`);
+    });
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
+}
+
+startServer(); 
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

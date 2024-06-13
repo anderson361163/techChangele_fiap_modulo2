@@ -1,7 +1,7 @@
 // models/Post.js
 
 const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('../sequelize');
+const sequelize = require('../config/sequelize');
 
 const Post = sequelize.define('Post', {
   id: {
@@ -17,6 +17,8 @@ const Post = sequelize.define('Post', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+},{
+  tableName: 'Post', // Especifique o nome da tabela no banco de dados aqui
 });
 
 module.exports = Post;
