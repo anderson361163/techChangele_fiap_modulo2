@@ -37,7 +37,7 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 - [x]  Implementação do servidor usando Node.js.
 - [x]  Utilização de frameworks como Express para roteamento e middleware.
 - [ ]  Persistência de Dados:
-- [ ]  Utilização de um sistema de banco de dados (por exemplo, MongoDB, PostgreSQL).
+    - [x]  Utilização de um sistema de banco de dados (por exemplo, MongoDB, PostgreSQL).
 - [ ]  Implementação de modelos de dados adequados para as postagens.
 - [ ]  Containerização com Docker:
     - [ ]  Desenvolvimento e implantação usando contêineres Docker para garantir consistência entre ambientes de desenvolvimento e produção.
