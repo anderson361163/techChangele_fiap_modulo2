@@ -8,11 +8,15 @@ Gustavo Fonseca    - RM354725
 João Pedro Sanches Luciano    - RM354782
 Vitor Laurentino    - RM354411
 
+# Data de entrega
+
+- 30/04/2024
+
 # Requisitos
 
 Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 
-- [ x ]  GET `/posts` - Lista de Posts:
+- [x]  GET `/posts` - Lista de Posts:
 - Este endpoint permitirá aos alunos visualizarem uma lista de todos os posts disponíveis na página principal.
 - [ ]  GET `/posts/:id` - Leitura de Posts:
 - Ao acessar este endpoint com um ID específico de post, os alunos poderão ler o conteúdo completo desse post.
@@ -20,7 +24,7 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 - Permite que professores criem novas postagens. Este endpoint aceitará dados como título, conteúdo e autor no corpo da requisição.
 - [ ]  PUT `/posts/:id` - Edição de Postagens:
 - Usado para editar uma postagem existente. Professores deverão fornecer o ID do post que desejam editar e os novos dados no corpo da requisição.
-- [ x ]  GET `/posts/admin` - Listagem de Todas as Postagens (Visão Administrativa):
+- [x]  GET `/posts/admin` - Listagem de Todas as Postagens (Visão Administrativa):
 - Este endpoint permitirá que professores vejam todas as postagens criadas, facilitando a gestão do conteúdo.
 - [ ]  DELETE `/posts/:id` - Exclusão de Postagens:
 - Permite que professores excluam uma postagem específica, usando o ID do post como parâmetro.
@@ -29,9 +33,9 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 
 # REQUISITOS TÉCNICOS
 
-- [ x ]  Back-end em Node.js:
-- [ x ]  Implementação do servidor usando Node.js.
-- [ x ]  Utilização de frameworks como Express para roteamento e middleware.
+- [x]  Back-end em Node.js:
+- [x]  Implementação do servidor usando Node.js.
+- [x]  Utilização de frameworks como Express para roteamento e middleware.
 - [ ]  Persistência de Dados:
 - [ ]  Utilização de um sistema de banco de dados (por exemplo, MongoDB, PostgreSQL).
 - [ ]  Implementação de modelos de dados adequados para as postagens.
