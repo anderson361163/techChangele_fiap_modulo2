@@ -7,7 +7,7 @@ export const db = new DataSource({
     username: 'root',
     password: 'root@2024',
     database: 'learnon_dev',
-    entities: ["src/entity/*.js"],
+    entities: ["src/models/*.js"],
     logging: true,
     synchronize: true
 })
