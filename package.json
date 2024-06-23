@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node --experimental-specifier-resolution=node dist/server.js",
     "dev": "tsc && node --experimental-specifier-resolution=node dist/server.js"
   },
   "repository": {
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/anderson361163/techChangele_fiap_modulo2#readme",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "pg": "^8.12.0",
     "typeorm": "^0.3.20",
