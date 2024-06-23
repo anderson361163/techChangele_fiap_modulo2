@@ -6,13 +6,13 @@ export class Post {
     id!: string;
 
     @Column("nvarchar", { name: 'ds_title', length: 100 })
-    title!: String;
+    title!: string;
 
     @Column("nvarchar", { name: 'ds_content', length: 3000 })
-    content!: String;
+    content!: string;
 
     @Column("nvarchar", { name: 'ds_author', length: 100 })
-    author!: String;
+    author!: string;
 
     @CreateDateColumn({ name: 'dt_created' })
     createdAt!: Date;
