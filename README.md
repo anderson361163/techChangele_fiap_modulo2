@@ -1,50 +1,34 @@
 # Tech Challenge 02 - FIAP Blog
 
-# Grupo 14 - Membros
+## Grupo 14 - Membros
+- RM353230 Anelise Estevam
+- RM355290 Anderson da Silva Machado 
+- RM354725 Gustavo Fonseca
+- RM354782 João Pedro Sanches Luciano 
 
-Anelise Estevam     - RM353230
-Anderson da Silva Machado    - RM355290
-Gustavo Fonseca    - RM354725
-João Pedro Sanches Luciano    - RM354782
-
-# Data de entrega
-
+## Data de entrega
 - 30/04/2024
 
-# Requisitos
-
+## Requisitos
+### Funcionais
 Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 
-- [X] GET `/posts` - Lista de Posts:
-
-- Este endpoint permitirá aos alunos visualizarem uma lista de todos os posts disponíveis na página principal.
-
-- [X] GET `/posts/:id` - Leitura de Posts:
-
-- Ao acessar este endpoint com um ID específico de post, os alunos poderão ler o conteúdo completo desse post.
-
-- [X] POST `/posts` - Criação de Postagens:
-
-- Permite que professores criem novas postagens. Este endpoint aceitará dados como título, conteúdo e autor no corpo da requisição.
-
+- [ ] GET `/posts` - Lista de Posts:
+  - Este endpoint permitirá aos alunos visualizarem uma lista de todos os posts disponíveis na página principal.
+- [ ] GET `/posts/:id` - Leitura de Posts:
+  - Ao acessar este endpoint com um ID específico de post, os alunos poderão ler o conteúdo completo desse post.
+- [ ] POST `/posts` - Criação de Postagens:
+  - Permite que professores criem novas postagens. Este endpoint aceitará dados como título, conteúdo e autor no corpo da requisição.
 - [ ] PUT `/posts/:id` - Edição de Postagens:
-
-- Usado para editar uma postagem existente. Professores deverão fornecer o ID do post que desejam editar e os novos dados no corpo da requisição.
-
-- [X] GET `/posts/admin` - Listagem de Todas as Postagens (Visão Administrativa):
-
-- Este endpoint permitirá que professores vejam todas as postagens criadas, facilitando a gestão do conteúdo.
-
+  - Usado para editar uma postagem existente. Professores deverão fornecer o ID do post que desejam editar e os novos dados no corpo da requisição.
+- [ ] GET `/posts/admin` - Listagem de Todas as Postagens (Visão Administrativa):
+  - Este endpoint permitirá que professores vejam todas as postagens criadas, facilitando a gestão do conteúdo.
 - [ ] DELETE `/posts/:id` - Exclusão de Postagens:
-
-- Permite que professores excluam uma postagem específica, usando o ID do post como parâmetro.
-
+  - Permite que professores excluam uma postagem específica, usando o ID do post como parâmetro.
 - [ ] GET `/posts/search` - Busca de Posts:
+  - Este endpoint permitirá a busca de posts por palavras-chave. Os usuários poderão passar uma query string com o termo de busca e o sistema retornará uma lista de posts que contêm esse termo no título ou conteúdo.
 
-- Este endpoint permitirá a busca de posts por palavras-chave. Os usuários poderão passar uma query string com o termo de busca e o sistema retornará uma lista de posts que contêm esse termo no título ou conteúdo.
-
-# REQUISITOS TÉCNICOS
-
+## Técnicos
 - [X] Back-end em Node.js:
 - [X] Implementação do servidor usando Node.js.
 - [X] Utilização de frameworks como Express para roteamento e middleware.
@@ -65,7 +49,7 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 💡 No front-end gostaria recomendo utilizar o `Handlebars` ao invés de usar a versão padrão
 </aside>
 
-# **ENTREGA**
+## Entrega
 
 - [ ] Código-Fonte: repositório GitHub com o código do projeto, incluindo Dockerfiles e scripts de CI/CD.
 - [ ] Apresentação Gravada: demonstração em vídeo do funcionamento da aplicação, incluindo detalhes técnicos de implementação.
@@ -73,10 +57,36 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 
 ---
 
-# Para rodar a aplicacao
+## Installation
 
+```bash
+$ npm install
 ```
-npm start
+
+## Running the app
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+## Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
 ```
 
 ---

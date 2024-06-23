@@ -1,14 +1,15 @@
 version: '3.9'
 
 services:
-  database:
-    image: postgres:latest
-    environment:
-      - POSTGRES_DB=learnon_dev
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+  postgres:
+    image: postgres
+    restart: always
     ports:
-      - "5433:5432"
+      - "5432:5432"
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
