@@ -5,13 +5,13 @@ export class Post {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({ length: 100 })
   title: string;
 
-  @Column()
+  @Column({ length: 10000 })
   content: string;
 
-  @Column()
+  @Column({ length: 50 })
   author: string;
 
   @Column({ nullable: true })
