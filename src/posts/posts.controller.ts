@@ -1,22 +1,25 @@
 import {PostsService} from "./posts.service";
-import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Req} from "@nestjs/common";
 import {CreatePostDto} from "./dto/create-post.dto";
 import {UpdatePostDto} from "./dto/update-post.dto";
+import {Request} from "express";
 
 @Controller('posts')
 export class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
     // TODO
-    // - Pagination
-    // - Input validation
     // - Authentication
     // - Error handling
     // - Tests
 
     @Get()
-    public async getPosts() {
-      return this.postsService.findAll();
+    public async getPosts(
+      @Req() req: Request,
+    ) {
+      const { page, limit } = req.pagination;
+
+      return this.postsService.findAll(page, limit);
     }
 
     @Get(':id')
@@ -42,8 +45,12 @@ export class PostsController {
     }
 
     @Get('admin')
-    public async getAdminPosts() {
-      return this.postsService.findAll(false);
+    public async getAdminPosts(
+      @Req() req: Request,
+    ) {
+      const { page, limit } = req.pagination;
+
+      return this.postsService.findAll(page, limit, false);
     }
 
     @Delete(':id')
@@ -55,8 +62,11 @@ export class PostsController {
 
     @Get('search')
     public async searchPosts(
+      @Req() req: Request,
       @Body() { query }: { query: string },
     ) {
-      return this.postsService.findAll(true, query);
+      const { page, limit } = req.pagination;
+
+      return this.postsService.findAll(page, limit, true, query);
     }
 }

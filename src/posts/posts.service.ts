@@ -1,9 +1,10 @@
 import {InjectRepository} from "@nestjs/typeorm";
-import {Repository, Not, IsNull, UpdateResult, ILike} from "typeorm";
+import {Repository, Not, IsNull, ILike} from "typeorm";
 import {Post} from "./post.entity";
 import {Injectable} from "@nestjs/common";
 import {CreatePostDto} from "./dto/create-post.dto";
 import {UpdatePostDto} from "./dto/update-post.dto";
+import {IPaginatedData} from "../common/pagination.middleware";
 
 @Injectable()
 export class PostsService {
@@ -12,7 +13,12 @@ export class PostsService {
         private readonly postsRepository: Repository<Post>,
     ) {}
 
-    async findAll(onlyPublished: boolean = true, searchTerm?: string): Promise<Post[]> {
+    async findAll(
+      page = 1,
+      limit = 10,
+      onlyPublished: boolean = true,
+      searchTerm?: string
+    ): Promise<IPaginatedData<Post>> {
         const where: any = [];
         if (searchTerm) {
             where.push({ title: ILike(`%${searchTerm}%`), content: ILike(`%${searchTerm}%`) });
@@ -21,7 +27,16 @@ export class PostsService {
             where.push({ publishedAt: Not(IsNull())});
         }
 
-        return this.postsRepository.find({ where });
+        const [posts, total] = await this.postsRepository.findAndCount({ where, take: limit, skip: (page - 1) * limit});
+
+        return {
+            data: posts,
+            meta: {
+                page,
+                limit,
+                total
+            }
+        }
     }
 
     async findOne(id: string): Promise<Post> {
