@@ -6,6 +6,10 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import { validationSchema as envValidationSchema } from "./common/config/validator";
 import {PostsModule} from "./posts/posts.module";
 import configuration from "./common/config/configuration";
+import {AuthModule} from "./auth/auth.module";
+import {APP_GUARD} from "@nestjs/core";
+import {AuthGuard} from "./common/guards/auth.guard";
+import {JwtModule, JwtService} from "@nestjs/jwt";
 
 @Module({
   imports: [
@@ -30,10 +34,29 @@ import configuration from "./common/config/configuration";
         synchronize: true,
       }),
     }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('jwt.secret'),
+        signOptions: {
+          expiresIn: configService.get('jwt.expiration'),
+        },
+      }),
+    }),
 
+    // Modules with controllers
+    AuthModule,
     PostsModule,
+
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    }
+  ],
 })
 export class AppModule {}

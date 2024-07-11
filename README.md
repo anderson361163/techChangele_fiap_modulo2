@@ -7,7 +7,7 @@
 - RM354782 João Pedro Sanches Luciano 
 
 ## Data de entrega
-- 30/04/2024
+- 30/07/2024
 
 ## Requisitos
 ### Funcionais
@@ -43,7 +43,7 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
   - [ ] Documentação técnica detalhada do projeto, incluindo setup inicial, arquitetura da aplicação e guia de uso das APIs.
 - [ ] Cobertura de Testes:
   - [ ] O projeto deve garantir que pelo menos 30% do código seja coberto por testes unitários. Essa medida é essencial para assegurar a qualidade e a estabilidade do código, especialmente em funções críticas como criação, edição e exclusão de postagens.
-- [ ] **Todos os endpoints que modificam dados (POST, PUT, DELETE) devem incluir autenticação e autorização adequadas para garantir que apenas usuários autorizados (professores) possam realizar essas operações.**
+- [X] **Todos os endpoints que modificam dados (POST, PUT, DELETE) devem incluir autenticação e autorização adequadas para garantir que apenas usuários autorizados (professores) possam realizar essas operações.**
 
 <aside>
 💡 No front-end gostaria recomendo utilizar o `Handlebars` ao invés de usar a versão padrão

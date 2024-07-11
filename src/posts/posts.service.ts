@@ -4,7 +4,7 @@ import {Post} from "./post.entity";
 import {Injectable} from "@nestjs/common";
 import {CreatePostDto} from "./dto/create-post.dto";
 import {UpdatePostDto} from "./dto/update-post.dto";
-import {IPaginatedData} from "../common/pagination.middleware";
+import {IPaginatedData, IPagination} from "../common/middleware/pagination.middleware";
 
 @Injectable()
 export class PostsService {
@@ -14,20 +14,15 @@ export class PostsService {
     ) {}
 
     async findAll(
-      page = 1,
-      limit = 10,
-      onlyPublished: boolean = true,
-      searchTerm?: string
+      where: any[] = [],
+      pagination: IPagination
     ): Promise<IPaginatedData<Post>> {
-        const where: any = [];
-        if (searchTerm) {
-            where.push({ title: ILike(`%${searchTerm}%`), content: ILike(`%${searchTerm}%`) });
-        }
-        if (onlyPublished) {
-            where.push({ publishedAt: Not(IsNull())});
-        }
-
-        const [posts, total] = await this.postsRepository.findAndCount({ where, take: limit, skip: (page - 1) * limit});
+        const { page, limit } = pagination;
+        const [posts, total] = await this.postsRepository.findAndCount({
+            where,
+            take: limit,
+            skip: (page - 1) * limit
+        });
 
         return {
             data: posts,
