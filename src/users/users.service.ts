@@ -18,6 +18,12 @@ export class UsersService {
     });
   }
 
+  public async findById(id: string): Promise<User | null> {
+    return this.usersRepository.findOne({
+      where: { id }
+    });
+  }
+
   public async create(user: Pick<User, 'email' | 'password' | 'role'>): Promise<User> {
     return this.usersRepository.save(user);
   }

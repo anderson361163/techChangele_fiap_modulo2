@@ -1,5 +1,5 @@
-import {IsBoolean, IsNotEmpty, IsOptional, MaxLength, MinLength} from "class-validator";
-import {ApiProperty} from "@nestjs/swagger";
+import {IsBoolean, IsNotEmpty, MaxLength, MinLength} from "class-validator";
+import {ApiHideProperty, ApiProperty} from "@nestjs/swagger";
 
 export class CreatePostDto {
   @ApiProperty()
@@ -14,15 +14,10 @@ export class CreatePostDto {
   @MaxLength(10000)
   content: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @MaxLength(50)
+  @ApiHideProperty()
   author: string;
 
-  @ApiProperty({
-    required: false,
-  })
-  @IsOptional()
+  @ApiProperty()
   @IsBoolean()
-  publish?: boolean;
+  publish: boolean;
 }

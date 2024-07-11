@@ -2,25 +2,23 @@ import {IsBoolean, IsNotEmpty, IsOptional, MaxLength, MinLength} from "class-val
 import {ApiProperty} from "@nestjs/swagger";
 
 export class UpdatePostDto {
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   @IsOptional()
   @IsNotEmpty()
   @MinLength(10)
   @MaxLength(100)
-  title: string;
+  title?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   @IsOptional()
   @IsNotEmpty()
   @MinLength(10)
   @MaxLength(10000)
-  content: string;
-
-  @ApiProperty()
-  @IsOptional()
-  @IsNotEmpty()
-  @MaxLength(50)
-  author: string;
+  content?: string;
 
   @ApiProperty({
     required: false,

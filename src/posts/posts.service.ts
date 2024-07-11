@@ -5,66 +5,111 @@ import {Injectable} from "@nestjs/common";
 import {CreatePostDto} from "./dto/create-post.dto";
 import {UpdatePostDto} from "./dto/update-post.dto";
 import {IPaginatedData, IPagination} from "../common/pagination/pagination.middleware";
+import {isDefined} from "class-validator";
 
 @Injectable()
 export class PostsService {
-    constructor(
-        @InjectRepository(Post)
-        private readonly postsRepository: Repository<Post>,
-    ) {}
+  constructor(
+    @InjectRepository(Post)
+    private readonly postsRepository: Repository<Post>,
+  ) {
+  }
 
-    async findAll(
-      where: any[] = [],
-      pagination: IPagination
-    ): Promise<IPaginatedData<Post>> {
-        const { page, limit } = pagination;
-        const [posts, total] = await this.postsRepository.findAndCount({
-            where,
-            take: limit,
-            skip: (page - 1) * limit
-        });
-
-        return {
-            data: posts,
-            meta: {
-                page,
-                limit,
-                total
-            }
+  private async _findAll(
+    where: any[] | any,
+    pagination: IPagination
+  ): Promise<IPaginatedData<Post>> {
+    const {page, limit} = pagination;
+    const [posts, total] = await this.postsRepository.findAndCount({
+      where,
+      relations: {
+        author: true,
+      },
+      select: {
+        author: {
+          id: true,
+          name: true
         }
+      },
+      take: limit,
+      skip: (page - 1) * limit
+    });
+
+    return {
+      data: posts,
+      meta: {
+        page,
+        limit,
+        total
+      }
     }
+  }
 
-    async findOne(id: string): Promise<Post | null> {
-        return this.postsRepository.findOne({
-            where: {
-                id
-            }
-        });
-    }
+  async findAllPublished(pagination: IPagination): Promise<IPaginatedData<Post>> {
+    return this._findAll({
+      publishedAt: Not(IsNull())
+    }, pagination);
+  }
 
-    async create(post: CreatePostDto): Promise<Post> {
-        const tempPost = {
-            title: post.title,
-            content: post.content,
-            author: post.author,
-            publishedAt: post.publish ? new Date() : null,
-        };
+  async findAll(pagination: IPagination): Promise<IPaginatedData<Post>> {
+    return this._findAll({}, pagination);
+  }
 
-        return this.postsRepository.save(tempPost);
-    }
+  async search(query: string, pagination: IPagination): Promise<IPaginatedData<Post>> {
+    return this._findAll([
+      {
+        title: ILike(`%${query}%`),
+        publishedAt: Not(IsNull())
+      },
+      {
+        content: ILike(`%${query}%`),
+        publishedAt: Not(IsNull())
+      },
+    ], pagination);
+  }
 
-    async update(id: string, post: UpdatePostDto): Promise<void> {
-        const tempPost = {
-            title: post.title,
-            content: post.content,
-            author: post.author,
-            publishedAt: post.publish ? new Date() : null,
-        };
+  async findOne(id: string): Promise<Post | null> {
+    return this.postsRepository.findOne({
+      relations: {
+        author: true,
+      },
+      select: {
+        author: {
+          id: true,
+          name: true
+        }
+      },
+      where: {
+        id,
+        publishedAt: Not(IsNull())
+      }
+    });
+  }
 
-        await this.postsRepository.update({ id }, tempPost);
-    }
+  async create(post: CreatePostDto): Promise<void> {
+    const tempPost = {
+      title: post.title,
+      content: post.content,
+      authorId: post.author,
+      publishedAt: post.publish ? new Date() : null,
+    };
 
-    async delete(id: string): Promise<void> {
-        await this.postsRepository.delete({ id });
-    }
+    await this.postsRepository.save(tempPost, {reload: false});
+  }
+
+  async update(id: string, post: UpdatePostDto): Promise<void> {
+    const tempPost = {
+      title: post.title,
+      content: post.content,
+      publishedAt: isDefined(post.publish)
+        ? post.publish ? new Date() : null
+        : undefined,
+    };
+
+    await this.postsRepository.update({id}, tempPost);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.postsRepository.delete({id});
+  }
 }

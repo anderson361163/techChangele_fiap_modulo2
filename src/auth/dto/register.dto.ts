@@ -5,6 +5,12 @@ import {ApiProperty} from "@nestjs/swagger";
 export class RegisterDto {
   @ApiProperty()
   @IsNotEmpty()
+  @MinLength(3)
+  @MaxLength(125)
+  name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
   @MaxLength(125)
   @IsEmail()
   email: string;

@@ -1,5 +1,7 @@
-import {Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {ApiProperty} from "@nestjs/swagger";
+import {Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {ApiHideProperty, ApiProperty} from "@nestjs/swagger";
+import {User} from "../users/user.entity";
+import {Exclude} from "class-transformer";
 
 @Entity()
 export class Post {
@@ -28,8 +30,14 @@ export class Post {
     example: 'John Doe',
     description: 'The author of the post'
   })
-  @Column({ length: 50 })
-  author: string;
+  @ManyToOne(() => User, { nullable: false })
+  @JoinColumn({ name: 'authorId' })
+  author: Pick<User, 'id' | 'name'>;
+
+  @ApiHideProperty()
+  @Exclude()
+  @Column({ select: false })
+  authorId: string;
 
   @ApiProperty({
     example: new Date(),

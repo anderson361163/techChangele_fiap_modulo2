@@ -9,11 +9,14 @@ import { Request } from 'express';
 import {Reflector} from "@nestjs/core";
 import {Auth} from "../decorators/role.decorator";
 import {Role} from "../enums/role.enum";
-import {isDefined} from "class-validator";
 
 declare module 'express' {
   interface Request {
-    user?: any;
+    user?: {
+      i: string;
+      e: string;
+      r: Role;
+    };
   }
 }
 
@@ -32,27 +35,24 @@ export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>(Auth, [context.getHandler(), context.getClass()]);
 
-    // If no roles, endpoint is public
-    if (!isDefined(requiredRoles)) {
-      return true;
-    }
-
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
-    if (!token) {
-      throw new UnauthorizedException();
-    }
     try {
+      const token = this.extractTokenFromHeader(request);
+      if (!token) {
+        throw new UnauthorizedException();
+      }
+
       const user = await this.jwtService.verifyAsync(token);
 
       request.user = user;
-    } catch {
-      throw new UnauthorizedException();
+    } catch (e) {
+      if (requiredRoles && requiredRoles.length) {
+        throw new UnauthorizedException();
+      }
     }
 
-    const highestWeight = Math.max(...requiredRoles.map((role) => RoleWeight[role]));
-
-    return requiredRoles.length ? RoleWeight[request.user.r] >= highestWeight : true;
+    const highestWeight = requiredRoles ? Math.max(...requiredRoles.map((role) => RoleWeight[role])) : 0;
+    return requiredRoles && requiredRoles.length ? RoleWeight[request.user.r] >= highestWeight : true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

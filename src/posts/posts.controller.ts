@@ -1,19 +1,32 @@
 import {PostsService} from "./posts.service";
-import {Body, Controller, Delete, Get, HttpCode, HttpStatus, NotFoundException, Param, Post, Put, Req} from "@nestjs/common";
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  UseInterceptors,
+} from "@nestjs/common";
 import {CreatePostDto} from "./dto/create-post.dto";
 import {UpdatePostDto} from "./dto/update-post.dto";
 import {Request} from "express";
 import {Auth} from "../common/decorators/role.decorator";
 import {Role} from "../common/enums/role.enum";
-import {ILike, IsNull, Not} from "typeorm";
 import {SearchPostDto} from "./dto/search-post.dto";
-import {ApiBearerAuth, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam} from "@nestjs/swagger";
-import {IPaginatedData} from "../common/pagination/pagination.middleware";
+import {ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiQuery} from "@nestjs/swagger";
 import {Post as PostEntity} from "./post.entity";
-import {PaginatedDto} from "../common/pagination/pagination.dto";
 import {ApiPaginatedResponse} from "../common/pagination/pagination.decorator";
 
 @Controller('posts')
+@UseInterceptors(ClassSerializerInterceptor)
 export class PostsController {
   constructor(
     private readonly postsService: PostsService
@@ -25,57 +38,55 @@ export class PostsController {
   // - Tests
 
   @Get()
-  @ApiParam({ name: 'page', required: false, type: Number })
-  @ApiParam({ name: 'limit', required: false, type: Number })
+  @ApiQuery({name: 'page', required: false, type: Number})
+  @ApiQuery({name: 'limit', required: false, type: Number})
   @ApiPaginatedResponse(PostEntity)
   public async getPosts(
     @Req() req: Request,
   ) {
-    return this.postsService.findAll([
-      { publishedAt: Not(IsNull())}
-    ], req.pagination);
+    return this.postsService.findAllPublished(req.pagination);
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
-  @ApiOkResponse({
-    description: 'Post created',
-    type: PostEntity
-  })
+  @ApiCreatedResponse({description: 'Post created'})
   public async createPost(
+    @Req() req: Request,
     @Body() post: CreatePostDto,
   ) {
-    return this.postsService.create(post);
+    const {user} = req;
+
+    return this.postsService.create({...post, author: user.i});
   }
 
   @Get('search')
-  @ApiParam({ name: 'page', required: false, type: Number })
-  @ApiParam({ name: 'limit', required: false, type: Number })
+  @ApiQuery({name: 'page', required: false, type: Number})
+  @ApiQuery({name: 'limit', required: false, type: Number})
+  @ApiQuery({name: 'query', required: true, type: String, description: 'Search query'})
   @ApiPaginatedResponse(PostEntity)
   public async searchPosts(
     @Req() req: Request,
-    @Body() {query}: SearchPostDto
+    @Query() param: SearchPostDto,
   ) {
-    return this.postsService.findAll([
-      { title: ILike(`%${query}%`), content: ILike(`%${query}%`) },
-      { publishedAt: Not(IsNull())}
-    ], req.pagination);
+    return this.postsService.search(param.query, req.pagination);
   }
 
   @Get('admin')
-  @ApiParam({ name: 'page', required: false, type: Number })
-  @ApiParam({ name: 'limit', required: false, type: Number })
+  @ApiQuery({name: 'page', required: false, type: Number})
+  @ApiQuery({name: 'limit', required: false, type: Number})
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
   @ApiPaginatedResponse(PostEntity)
   public async getAdminPosts(
     @Req() req: Request,
   ) {
-    return this.postsService.findAll([], req.pagination);
+    return this.postsService.findAll(req.pagination);
   }
 
   @Get(':id')
+  @ApiParam({name: 'id', type: String, description: 'Post ID'})
   @ApiOkResponse({
     description: 'Post found',
     type: PostEntity
@@ -94,6 +105,7 @@ export class PostsController {
   }
 
   @Delete(':id')
+  @ApiParam({name: 'id', type: String, description: 'Post ID'})
   @HttpCode(HttpStatus.NO_CONTENT)
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
@@ -107,6 +119,7 @@ export class PostsController {
   }
 
   @Put(':id')
+  @ApiParam({name: 'id', type: String, description: 'Post ID'})
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
   @ApiOkResponse({
