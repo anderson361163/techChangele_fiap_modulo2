@@ -2,7 +2,7 @@ import {IsEmail, IsEnum, IsNotEmpty, IsStrongPassword, MaxLength, MinLength} fro
 import {Role} from "../../common/enums/role.enum";
 import {ApiProperty} from "@nestjs/swagger";
 
-export class RegisterUserDto {
+export class RegisterDto {
   @ApiProperty()
   @IsNotEmpty()
   @MaxLength(125)
@@ -21,7 +21,7 @@ export class RegisterUserDto {
   })
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({ enum: Role })
   @IsNotEmpty()
   @IsEnum(Role)
   role: Role;

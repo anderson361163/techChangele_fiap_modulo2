@@ -1,5 +1,6 @@
 import {Injectable, NestMiddleware, UnprocessableEntityException} from "@nestjs/common";
 import {Request, Response, NextFunction} from "express";
+import {ApiParam} from "@nestjs/swagger";
 
 declare module 'express' {
     interface Request {
@@ -15,13 +16,16 @@ export interface IPagination {
     limit: number;
 }
 
+export interface IPaginationMeta {
+    page: number;
+    limit: number;
+    total: number;
+
+}
+
 export interface IPaginatedData<T> {
     data: T[];
-    meta: {
-        page: number;
-        limit: number;
-        total: number;
-    }
+    meta: IPaginationMeta;
 }
 
 @Injectable()

@@ -3,7 +3,8 @@ import {AuthService} from "./auth.service";
 import {Request} from "express";
 import {Role} from "../common/enums/role.enum";
 import {Auth} from "../common/decorators/role.decorator";
-import {RegisterUserDto} from "./dto/registerUserDto";
+import {RegisterDto} from "./dto/register.dto";
+import {ApiBasicAuth, ApiBearerAuth, ApiSecurity} from "@nestjs/swagger";
 
 @Controller('auth')
 export class AuthController {
@@ -11,6 +12,7 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
+  @ApiBasicAuth()
   async login(@Headers('Authorization') authorization: string) {
     if (!authorization || !authorization.startsWith('Basic ')) {
       throw new UnprocessableEntityException('Missing credentials');
@@ -26,12 +28,13 @@ export class AuthController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
-  async register(@Body() user: RegisterUserDto) {
+  async register(@Body() user: RegisterDto) {
     return this.authService.register(user);
   }
 
   @Get('me')
   @Auth([Role.USER])
+  @ApiBearerAuth()
   async me(@Req() req: Request) {
     return req.user!;
   }

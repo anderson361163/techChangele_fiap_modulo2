@@ -4,7 +4,7 @@ import {Post} from "./post.entity";
 import {Injectable} from "@nestjs/common";
 import {CreatePostDto} from "./dto/create-post.dto";
 import {UpdatePostDto} from "./dto/update-post.dto";
-import {IPaginatedData, IPagination} from "../common/middleware/pagination.middleware";
+import {IPaginatedData, IPagination} from "../common/pagination/pagination.middleware";
 
 @Injectable()
 export class PostsService {
@@ -34,7 +34,7 @@ export class PostsService {
         }
     }
 
-    async findOne(id: string): Promise<Post> {
+    async findOne(id: string): Promise<Post | null> {
         return this.postsRepository.findOne({
             where: {
                 id
