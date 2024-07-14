@@ -30,13 +30,145 @@ describe('PostsService', () => {
   });
 
   // it('should create a post', async () => {
-  //   const post = await service.create({
+  //   const post = new Post();
+  //   post.id = '1';
+  //   post.title = 'Post title';
+  //   post.content = 'Post content';
+  //   post.author = {
+  //     name: 'John Doe',
   //     id: '1',
-  //     title: 'Post title',
-  //     content: 'Post content',
-  //     author: '1',
+  //   };
+
+  //   jest.spyOn(repository, 'save').mockResolvedValue(post);
+
+  //   const createdPost = await service.create({
+  //     title: post.title,
+  //     content: post.content,
+  //     author: post.author.id,
   //     publish: true,
-  //   } as CreatePostDto);
-  //   expect(post).toBeDefined();
+  //   });
+
+  //   console.log(createdPost);
+
+  //   expect(createdPost).toBeDefined();
+  // });
+
+  it('should find all posts', async () => {
+    const post = new Post();
+    post.id = '1';
+    post.title = 'Post title';
+    post.content = 'Post content';
+    post.author = {
+      name: 'John Doe',
+      id: '1',
+    };
+
+    jest.spyOn(repository, 'findAndCount').mockResolvedValue([[post], 1]);
+
+    const posts = await service.findAll({
+      page: 1,
+      limit: 10,
+    });
+
+    expect(posts).toBeDefined();
+  });
+
+  it('should find all published posts', async () => {
+    const post = new Post();
+    post.id = '1';
+    post.title = 'Post title';
+    post.content = 'Post content';
+    post.author = {
+      name: 'John Doe',
+      id: '1',
+    };
+    post.publishedAt = new Date();
+
+    jest.spyOn(repository, 'findAndCount').mockResolvedValue([[post], 1]);
+
+    const posts = await service.findAllPublished({
+      page: 1,
+      limit: 10,
+    });
+
+    expect(posts).toBeDefined();
+  });
+
+  it('should search for posts', async () => {
+    const post = new Post();
+    post.id = '1';
+    post.title = 'Post title';
+    post.content = 'Post content';
+    post.author = {
+      name: 'John Doe',
+      id: '1',
+    };
+    post.publishedAt = new Date();
+
+    jest.spyOn(repository, 'findAndCount').mockResolvedValue([[post], 1]);
+
+    const posts = await service.search('Post', {
+      page: 1,
+      limit: 10,
+    });
+
+    expect(posts).toBeDefined();
+  });
+
+  it('should find a post by id', async () => {
+    const post = new Post();
+    post.id = '1';
+    post.title = 'Post title';
+    post.content = 'Post content';
+    post.author = {
+      name: 'John Doe',
+      id: '1',
+    };
+    post.publishedAt = new Date();
+
+    jest.spyOn(repository, 'findOne').mockResolvedValue(post);
+
+    const foundPost = await service.findOne('1');
+
+    expect(foundPost).toBeDefined();
+  });
+
+  // it('should update a post', async () => {
+  //   const post = new Post();
+  //   post.id = '1';
+  //   post.title = 'Post title';
+  //   post.content = 'Post content';
+  //   post.author = {
+  //     name: 'John Doe',
+  //     id: '1',
+  //   };
+
+  //   jest.spyOn(repository, 'findOne').mockResolvedValue(post);
+  //   jest.spyOn(repository, 'save').mockResolvedValue(post);
+
+  //   const updatedPost = await service.update('1', {
+  //     title: 'New title',
+  //     content: 'New content',
+  //   });
+
+  //   expect(updatedPost).toBeDefined();
+  // });
+
+  // it('should delete a post', async () => {
+  //   const post = new Post();
+  //   post.id = '1';
+  //   post.title = 'Post title';
+  //   post.content = 'Post content';
+  //   post.author = {
+  //     name: 'John Doe',
+  //     id: '1',
+  //   };
+
+  //   jest.spyOn(repository, 'findOne').mockResolvedValue(post);
+  //   jest.spyOn(repository, 'remove').mockResolvedValue(post);
+
+  //   const deletedPost = await service.delete('1');
+
+  //   expect(deletedPost).toBeDefined();
   // });
 });
