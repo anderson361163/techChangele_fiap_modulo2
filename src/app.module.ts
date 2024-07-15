@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from "@nestjs/typeorm";
-import {ConfigModule, ConfigService} from "@nestjs/config";
-import { validationSchema as envValidationSchema } from "./common/config/validator";
-import {PostsModule} from "./posts/posts.module";
-import configuration from "./common/config/configuration";
-import {AuthModule} from "./auth/auth.module";
-import {APP_GUARD} from "@nestjs/core";
-import {AuthGuard} from "./common/guards/auth.guard";
-import {JwtModule, JwtService} from "@nestjs/jwt";
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { validationSchema as envValidationSchema } from './common/config/validator';
+import { PostsModule } from './posts/posts.module';
+import configuration from './common/config/configuration';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './common/guards/auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -48,7 +48,6 @@ import {JwtModule, JwtService} from "@nestjs/jwt";
     // Modules with controllers
     AuthModule,
     PostsModule,
-
   ],
   controllers: [AppController],
   providers: [
@@ -56,7 +55,7 @@ import {JwtModule, JwtService} from "@nestjs/jwt";
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
-    }
+    },
   ],
 })
 export class AppModule {}

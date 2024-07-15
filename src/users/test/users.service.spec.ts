@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthService } from '../auth/auth.service';
-import { UsersService } from '../users/users.service';
-import { User } from '../users/user.entity';
+import { AuthService } from '../../auth/auth.service';
+import { UsersService } from '../users.service';
+import { User } from '../user.entity';
 import { Repository } from 'typeorm';
-import { Role } from '../common/enums/role.enum';
 import { JwtService } from '@nestjs/jwt';
 
 describe('AuthService', () => {

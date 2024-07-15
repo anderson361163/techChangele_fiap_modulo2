@@ -1,28 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing';
-import { PostsService } from '../posts/posts.service';
+import { PostsService } from '../posts.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Post } from '../posts/post.entity';
+import { Post } from '../post.entity';
 import { Repository } from 'typeorm';
-import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 
 describe('PostsService', () => {
   let service: PostsService;
   let repository: Repository<Post>;
 
   beforeEach(async () => {
+    const repositoryToken = getRepositoryToken(Post);
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         PostsService,
         {
-          provide: getRepositoryToken(Post),
+          // FIXME: Use mock repository instead of real repository, so we can drop spyOn usage
+          provide: repositoryToken,
           useClass: Repository,
         },
       ],
     }).compile();
 
     service = module.get<PostsService>(PostsService);
-    repository = module.get<Repository<Post>>(getRepositoryToken(Post));
+    repository = module.get<Repository<Post>>(repositoryToken);
   });
 
   it('should be defined', () => {
@@ -54,23 +56,55 @@ describe('PostsService', () => {
   // });
 
   it('should find all posts', async () => {
-    const post = new Post();
-    post.id = '1';
-    post.title = 'Post title';
-    post.content = 'Post content';
-    post.author = {
-      name: 'John Doe',
-      id: '1',
-    };
+    const posts: Post[] = [
+      {
+        id: '1',
+        title: 'Post title',
+        content: 'Post content',
+        author: {
+          name: 'John Doe',
+          id: '1',
+        },
+        authorId: '1',
+        publishedAt: new Date(),
+        isPublished: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+      },
+      {
+        id: '2',
+        title: 'Post title',
+        content: 'Post content',
+        author: {
+          name: 'John Doe',
+          id: '1',
+        },
+        authorId: '1',
+        publishedAt: null,
+        isPublished: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        deletedAt: null,
+      },
+    ];
 
-    jest.spyOn(repository, 'findAndCount').mockResolvedValue([[post], 1]);
+    jest
+      .spyOn(repository, 'findAndCount')
+      .mockResolvedValue([posts, posts.length]);
 
-    const posts = await service.findAll({
+    const found = await service.findAll({
       page: 1,
       limit: 10,
     });
 
-    expect(posts).toBeDefined();
+    expect(found).toBeDefined();
+    expect(found.data).toEqual(posts);
+    expect(found.meta).toEqual({
+      page: 1,
+      limit: 10,
+      total: posts.length,
+    });
   });
 
   it('should find all published posts', async () => {

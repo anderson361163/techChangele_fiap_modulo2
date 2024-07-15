@@ -1,4 +1,4 @@
-import {PostsService} from "./posts.service";
+import { PostsService } from './posts.service';
 import {
   Body,
   ClassSerializerInterceptor,
@@ -14,36 +14,39 @@ import {
   Query,
   Req,
   UseInterceptors,
-} from "@nestjs/common";
-import {CreatePostDto} from "./dto/create-post.dto";
-import {UpdatePostDto} from "./dto/update-post.dto";
-import {Request} from "express";
-import {Auth} from "../common/decorators/role.decorator";
-import {Role} from "../common/enums/role.enum";
-import {SearchPostDto} from "./dto/search-post.dto";
-import {ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiNotFoundResponse, ApiOkResponse, ApiParam, ApiQuery} from "@nestjs/swagger";
-import {Post as PostEntity} from "./post.entity";
-import {ApiPaginatedResponse} from "../common/pagination/pagination.decorator";
+} from '@nestjs/common';
+import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { Request } from 'express';
+import { Auth } from '../common/decorators/role.decorator';
+import { Role } from '../common/enums/role.enum';
+import { SearchPostDto } from './dto/search-post.dto';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
+import { Post as PostEntity } from './post.entity';
+import { ApiPaginatedResponse } from '../common/pagination/pagination.decorator';
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
 export class PostsController {
-  constructor(
-    private readonly postsService: PostsService
-  ) {
-  }
+  constructor(private readonly postsService: PostsService) {}
 
   // TODO:
   // - Error handling
   // - Tests
 
   @Get()
-  @ApiQuery({name: 'page', required: false, type: Number})
-  @ApiQuery({name: 'limit', required: false, type: Number})
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
   @ApiPaginatedResponse(PostEntity)
-  public async getPosts(
-    @Req() req: Request,
-  ) {
+  public async getPosts(@Req() req: Request) {
     return this.postsService.findAllPublished(req.pagination);
   }
 
@@ -51,52 +54,47 @@ export class PostsController {
   @HttpCode(HttpStatus.CREATED)
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
-  @ApiCreatedResponse({description: 'Post created'})
-  public async createPost(
-    @Req() req: Request,
-    @Body() post: CreatePostDto,
-  ) {
-    const {user} = req;
+  @ApiCreatedResponse({ description: 'Post created' })
+  public async createPost(@Req() req: Request, @Body() post: CreatePostDto) {
+    const { user } = req;
 
-    return this.postsService.create({...post, author: user.i});
+    return this.postsService.create({ ...post, author: user.i });
   }
 
   @Get('search')
-  @ApiQuery({name: 'page', required: false, type: Number})
-  @ApiQuery({name: 'limit', required: false, type: Number})
-  @ApiQuery({name: 'query', required: true, type: String, description: 'Search query'})
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiQuery({
+    name: 'query',
+    required: true,
+    type: String,
+    description: 'Search query',
+  })
   @ApiPaginatedResponse(PostEntity)
-  public async searchPosts(
-    @Req() req: Request,
-    @Query() param: SearchPostDto,
-  ) {
+  public async searchPosts(@Req() req: Request, @Query() param: SearchPostDto) {
     return this.postsService.search(param.query, req.pagination);
   }
 
   @Get('admin')
-  @ApiQuery({name: 'page', required: false, type: Number})
-  @ApiQuery({name: 'limit', required: false, type: Number})
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
   @ApiPaginatedResponse(PostEntity)
-  public async getAdminPosts(
-    @Req() req: Request,
-  ) {
+  public async getAdminPosts(@Req() req: Request) {
     return this.postsService.findAll(req.pagination);
   }
 
   @Get(':id')
-  @ApiParam({name: 'id', type: String, description: 'Post ID'})
+  @ApiParam({ name: 'id', type: String, description: 'Post ID' })
   @ApiOkResponse({
     description: 'Post found',
-    type: PostEntity
+    type: PostEntity,
   })
   @ApiNotFoundResponse({
-    description: 'Post not found'
+    description: 'Post not found',
   })
-  public async getPost(
-    @Param() {id}: { id: string },
-  ) {
+  public async getPost(@Param() { id }: { id: string }) {
     const post = this.postsService.findOne(id);
     if (!post) {
       throw new NotFoundException('Post not found');
@@ -105,29 +103,27 @@ export class PostsController {
   }
 
   @Delete(':id')
-  @ApiParam({name: 'id', type: String, description: 'Post ID'})
+  @ApiParam({ name: 'id', type: String, description: 'Post ID' })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
   @ApiNoContentResponse({
-    description: 'Post deleted'
+    description: 'Post deleted',
   })
-  public async deletePost(
-    @Param() {id}: { id: string },
-  ) {
+  public async deletePost(@Param() { id }: { id: string }) {
     return this.postsService.delete(id);
   }
 
   @Put(':id')
-  @ApiParam({name: 'id', type: String, description: 'Post ID'})
+  @ApiParam({ name: 'id', type: String, description: 'Post ID' })
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
   @ApiOkResponse({
     description: 'Post updated',
-    type: PostEntity
+    type: PostEntity,
   })
   public async updatePost(
-    @Param() {id}: { id: string },
+    @Param() { id }: { id: string },
     @Body() post: UpdatePostDto,
   ) {
     return this.postsService.update(id, post);

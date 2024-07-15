@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
-import {Reflector} from "@nestjs/core";
-import {Auth} from "../decorators/role.decorator";
-import {Role} from "../enums/role.enum";
+import { Reflector } from '@nestjs/core';
+import { Auth } from '../decorators/role.decorator';
+import { Role } from '../enums/role.enum';
 
 declare module 'express' {
   interface Request {
@@ -23,7 +23,7 @@ declare module 'express' {
 export const RoleWeight: Record<Role, number> = {
   [Role.USER]: 10,
   [Role.ADMIN]: 100,
-}
+};
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -33,7 +33,10 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(Auth, [context.getHandler(), context.getClass()]);
+    const requiredRoles = this.reflector.getAllAndOverride<Role[]>(Auth, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
 
     const request = context.switchToHttp().getRequest();
     try {
@@ -51,8 +54,12 @@ export class AuthGuard implements CanActivate {
       }
     }
 
-    const highestWeight = requiredRoles ? Math.max(...requiredRoles.map((role) => RoleWeight[role])) : 0;
-    return requiredRoles && requiredRoles.length ? RoleWeight[request.user.r] >= highestWeight : true;
+    const highestWeight = requiredRoles
+      ? Math.max(...requiredRoles.map((role) => RoleWeight[role]))
+      : 0;
+    return requiredRoles && requiredRoles.length
+      ? RoleWeight[request.user.r] >= highestWeight
+      : true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {

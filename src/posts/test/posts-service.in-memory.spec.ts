@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing';
-import { PostRepositoryInMemory } from 'src/posts/posts-service.in-memory';
+import { PostRepositoryInMemory } from './posts-service.in-memory';
 
 describe('PostsService', () => {
   let service: PostRepositoryInMemory;
