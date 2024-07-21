@@ -4,6 +4,7 @@ import { UsersService } from '../users.service';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '../../common/enums/role.enum';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -30,15 +31,15 @@ describe('AuthService', () => {
     expect(service).toBeDefined();
   });
 
-  // it('should register a user', async () => {
+  // it('should create a new user', async () => {
   //   const user = new User();
-  //   user.id = '1';
   //   user.name = 'John Doe';
   //   user.email = 'johndoe@example.com';
   //   user.password = 'password';
   //   user.role = Role.USER;
 
-  //   jest.spyOn(repository, 'save').mockResolvedValue(user);
+  //   const save = jest.fn().mockResolvedValue(user);
+  //   jest.spyOn(repository, 'save').mockImplementation(save);
 
   //   const token = await service.register({
   //     email: user.email,
@@ -46,6 +47,8 @@ describe('AuthService', () => {
   //     password: user.password,
   //     role: user.role,
   //   });
+
+  //   console.log(token);
 
   //   expect(token).toBeDefined();
   // });
