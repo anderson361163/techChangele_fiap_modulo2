@@ -24,15 +24,6 @@ export class PostsService {
     const { page, limit } = pagination;
     const [posts, total] = await this.postsRepository.findAndCount({
       where,
-      relations: {
-        author: true,
-      },
-      select: {
-        author: {
-          id: true,
-          name: true,
-        },
-      },
       take: limit,
       skip: (page - 1) * limit,
     });
@@ -83,15 +74,6 @@ export class PostsService {
 
   async findOne(id: string): Promise<Post | null> {
     return this.postsRepository.findOne({
-      relations: {
-        author: true,
-      },
-      select: {
-        author: {
-          id: true,
-          name: true,
-        },
-      },
       where: {
         id,
         publishedAt: Not(IsNull()),
@@ -99,15 +81,16 @@ export class PostsService {
     });
   }
 
-  async create(post: CreatePostDto): Promise<void> {
+  async create(post: CreatePostDto): Promise<string> {
     const tempPost = {
       title: post.title,
       content: post.content,
-      authorId: post.author,
+      author: post.author,
       publishedAt: post.publish ? new Date() : null,
     };
 
-    await this.postsRepository.save(tempPost, { reload: false });
+    const { id } = await this.postsRepository.save(tempPost);
+    return id;
   }
 
   async update(id: string, post: UpdatePostDto): Promise<void> {

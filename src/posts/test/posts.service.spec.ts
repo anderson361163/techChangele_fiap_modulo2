@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing';
 import { PostsService } from '../posts.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from '../post.entity';
 import { Repository } from 'typeorm';
 
@@ -10,88 +10,76 @@ describe('PostsService', () => {
   let repository: Repository<Post>;
 
   beforeEach(async () => {
-    const repositoryToken = getRepositoryToken(Post);
-
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        PostsService,
-        {
-          // FIXME: Use mock repository instead of real repository, so we can drop spyOn usage
-          provide: repositoryToken,
-          useClass: Repository,
-        },
+      imports: [
+        TypeOrmModule.forRootAsync({
+          useFactory: () => ({
+            type: 'sqlite',
+            database: ':memory:',
+            entities: [Post],
+            synchronize: true,
+          }),
+        }),
+        TypeOrmModule.forFeature([Post]),
       ],
+      providers: [PostsService],
     }).compile();
 
     service = module.get<PostsService>(PostsService);
-    repository = module.get<Repository<Post>>(repositoryToken);
+    repository = module.get<Repository<Post>>(getRepositoryToken(Post));
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
-  // it('should create a post', async () => {
-  //   const post = new Post();
-  //   post.id = '1';
-  //   post.title = 'Post title';
-  //   post.content = 'Post content';
-  //   post.author = {
-  //     name: 'John Doe',
-  //     id: '1',
-  //   };
-
-  //   jest.spyOn(repository, 'save').mockResolvedValue(post);
-
-  //   const createdPost = await service.create({
-  //     title: post.title,
-  //     content: post.content,
-  //     author: post.author.id,
-  //     publish: true,
-  //   });
-
-  //   console.log(createdPost);
-
-  //   expect(createdPost).toBeDefined();
-  // });
-
-  it('should find all posts', async () => {
-    const posts: Post[] = [
+  it('should find all published posts', async () => {
+    const posts = [
       {
         id: '1',
         title: 'Post title',
         content: 'Post content',
-        author: {
-          name: 'John Doe',
-          id: '1',
-        },
-        authorId: '1',
+        author: 'John Doe',
         publishedAt: new Date(),
-        isPublished: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        deletedAt: null,
       },
       {
         id: '2',
-        title: 'Post title',
-        content: 'Post content',
-        author: {
-          name: 'John Doe',
-          id: '1',
-        },
-        authorId: '1',
-        publishedAt: null,
-        isPublished: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        deletedAt: null,
+        title: 'Post title²',
+        content: 'Post content²',
+        author: 'John Doe²',
       },
     ];
 
-    jest
-      .spyOn(repository, 'findAndCount')
-      .mockResolvedValue([posts, posts.length]);
+    await repository.save(posts);
+
+    const found = await service.findAllPublished({
+      page: 1,
+      limit: 10,
+    });
+
+    expect(found).toBeDefined();
+    expect(found.data).toMatchObject([posts[0]]);
+    expect(found.meta).toEqual({
+      page: 1,
+      limit: 10,
+      total: 1,
+    });
+  });
+
+  it('should find all posts', async () => {
+    const posts = [
+      {
+        id: '1',
+        title: 'Post title',
+        content: 'Post content',
+        author: 'John Doe',
+        publishedAt: new Date(),
+      },
+      {
+        id: '2',
+        title: 'Post title²',
+        content: 'Post content²',
+        author: 'John Doe²',
+      },
+    ];
+
+    await repository.save(posts);
 
     const found = await service.findAll({
       page: 1,
@@ -99,110 +87,172 @@ describe('PostsService', () => {
     });
 
     expect(found).toBeDefined();
-    expect(found.data).toEqual(posts);
+    expect(found.data).toMatchObject(posts);
     expect(found.meta).toEqual({
       page: 1,
       limit: 10,
-      total: posts.length,
+      total: 2,
     });
-  });
-
-  it('should find all published posts', async () => {
-    const post = new Post();
-    post.id = '1';
-    post.title = 'Post title';
-    post.content = 'Post content';
-    post.author = {
-      name: 'John Doe',
-      id: '1',
-    };
-    post.publishedAt = new Date();
-
-    jest.spyOn(repository, 'findAndCount').mockResolvedValue([[post], 1]);
-
-    const posts = await service.findAllPublished({
-      page: 1,
-      limit: 10,
-    });
-
-    expect(posts).toBeDefined();
   });
 
   it('should search for posts', async () => {
-    const post = new Post();
-    post.id = '1';
-    post.title = 'Post title';
-    post.content = 'Post content';
-    post.author = {
-      name: 'John Doe',
-      id: '1',
-    };
-    post.publishedAt = new Date();
+    const posts = [
+      {
+        id: '1',
+        title: 'Post title',
+        content: 'Post content',
+        author: 'John Doe',
+        publishedAt: new Date(),
+      },
+      {
+        id: '2',
+        title: 'Post title²',
+        content: 'Post content²',
+        author: 'John Doe²',
+      },
+      {
+        id: '3',
+        title: 'Post title³',
+        content: 'Post content³',
+        author: 'John Doe³',
+        publishedAt: new Date(),
+      },
+    ];
+    await repository.save(posts);
 
-    jest.spyOn(repository, 'findAndCount').mockResolvedValue([[post], 1]);
+    {
+      const found = await service.search('title³', {
+        page: 1,
+        limit: 10,
+      });
 
-    const posts = await service.search('Post', {
-      page: 1,
-      limit: 10,
-    });
+      expect(found).toBeDefined();
+      expect(found.data).toMatchObject([posts[2]]);
+      expect(found.meta).toEqual({
+        page: 1,
+        limit: 10,
+        total: 1,
+      });
+    }
+    {
+      const found = await service.search('content', {
+        page: 1,
+        limit: 10,
+      });
 
-    expect(posts).toBeDefined();
+      expect(found).toBeDefined();
+      expect(found.data).toMatchObject([posts[0], posts[2]]);
+      expect(found.meta).toEqual({
+        page: 1,
+        limit: 10,
+        total: 2,
+      });
+    }
   });
 
   it('should find a post by id', async () => {
-    const post = new Post();
-    post.id = '1';
-    post.title = 'Post title';
-    post.content = 'Post content';
-    post.author = {
-      name: 'John Doe',
-      id: '1',
-    };
-    post.publishedAt = new Date();
+    const posts = [
+      {
+        id: '1',
+        title: 'Post title',
+        content: 'Post content',
+        author: 'John Doe',
+        publishedAt: new Date(),
+      },
+      {
+        id: '2',
+        title: 'Post title²',
+        content: 'Post content²',
+        author: 'John Doe²',
+      },
+    ];
+    await repository.save(posts);
 
-    jest.spyOn(repository, 'findOne').mockResolvedValue(post);
-
-    const foundPost = await service.findOne('1');
-
-    expect(foundPost).toBeDefined();
+    {
+      const foundPost = await service.findOne('1');
+      expect(foundPost).toMatchObject(posts[0]);
+    }
+    {
+      const foundPost = await service.findOne('2');
+      expect(foundPost).toBeNull();
+    }
   });
 
-  // it('should update a post', async () => {
-  //   const post = new Post();
-  //   post.id = '1';
-  //   post.title = 'Post title';
-  //   post.content = 'Post content';
-  //   post.author = {
-  //     name: 'John Doe',
-  //     id: '1',
-  //   };
+  it('should create a post', async () => {
+    {
+      const post = {
+        title: 'Post title',
+        content: 'Post content',
+        author: 'John Doe',
+        publish: false,
+      };
 
-  //   jest.spyOn(repository, 'findOne').mockResolvedValue(post);
-  //   jest.spyOn(repository, 'save').mockResolvedValue(post);
+      const id = await service.create(post);
+      const created = await repository.findOneBy({ id });
+      expect(created).toMatchObject({
+        title: post.title,
+        content: post.content,
+        author: post.author,
+        publishedAt: null,
+      });
+    }
+    {
+      const post = {
+        title: 'Post title²',
+        content: 'Post content²',
+        author: 'John Doe²',
+        publish: true,
+      };
 
-  //   const updatedPost = await service.update('1', {
-  //     title: 'New title',
-  //     content: 'New content',
-  //   });
+      const id = await service.create(post);
+      const created = await repository.findOneBy({ id });
+      expect(created).toMatchObject({
+        title: post.title,
+        content: post.content,
+        author: post.author,
+        publishedAt: expect.any(Date),
+      });
+    }
+  });
 
-  //   expect(updatedPost).toBeDefined();
-  // });
+  it('should update a post', async () => {
+    const post = {
+      title: 'Post title',
+      content: 'Post content',
+      author: 'John Doe',
+    };
+    const { id } = await repository.save(post);
 
-  // it('should delete a post', async () => {
-  //   const post = new Post();
-  //   post.id = '1';
-  //   post.title = 'Post title';
-  //   post.content = 'Post content';
-  //   post.author = {
-  //     name: 'John Doe',
-  //     id: '1',
-  //   };
+    {
+      const updatedPost = {
+        title: 'Updated title',
+        content: 'Updated content',
+      };
+      await service.update(id, updatedPost);
 
-  //   jest.spyOn(repository, 'findOne').mockResolvedValue(post);
-  //   jest.spyOn(repository, 'remove').mockResolvedValue(post);
+      const foundPost = await repository.findOneBy({ id });
+      expect(foundPost).toMatchObject({
+        title: updatedPost.title,
+        content: updatedPost.content,
+        author: post.author,
+        publishedAt: null,
+      });
+    }
+    {
+      const updatedPost = {
+        title: 'Updated title again',
+        content: 'Updated content once more',
+        publish: true,
+      };
+      await service.update(id, updatedPost);
 
-  //   const deletedPost = await service.delete('1');
-
-  //   expect(deletedPost).toBeDefined();
-  // });
+      const foundPost = await repository.findOneBy({ id });
+      expect(foundPost).toMatchObject({
+        title: updatedPost.title,
+        content: updatedPost.content,
+        author: post.author,
+        publishedAt: expect.any(Date),
+      });
+    }
+  });
 });

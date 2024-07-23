@@ -40,7 +40,6 @@ export class PostsController {
 
   // TODO:
   // - Error handling
-  // - Tests
 
   @Get()
   @ApiQuery({ name: 'page', required: false, type: Number })

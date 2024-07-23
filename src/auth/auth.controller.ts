@@ -22,7 +22,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
-import { UsersService } from '../users/users.service';
+import { AUsersService } from '../users/users.service';
 import { User as UserEntity } from '../users/user.entity';
 
 @Controller('auth')
@@ -30,7 +30,7 @@ import { User as UserEntity } from '../users/user.entity';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly usersService: UsersService,
+    private readonly usersService: AUsersService,
   ) {}
 
   @HttpCode(HttpStatus.OK)

@@ -3,24 +3,22 @@ import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-export class AUsersService {
-  findOne(email: string): Promise<User | null> {
-    throw new Error('Method not implemented.');
-  }
-  findById(id: string): Promise<User | null> {
-    throw new Error('Method not implemented.');
-  }
-  create(user: Pick<User, 'email' | 'password' | 'role'>): Promise<User> {
-    throw new Error('Method not implemented.');
-  }
+export abstract class AUsersService {
+  abstract findOne(_email: string): Promise<User | null>;
+  abstract findById(_id: string): Promise<User | null>;
+  abstract create(
+    user: Pick<User, 'name' | 'email' | 'password' | 'role'>,
+  ): Promise<User>;
 }
 
 @Injectable()
-export class UsersService implements AUsersService {
+export class UsersService extends AUsersService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-  ) {}
+  ) {
+    super();
+  }
 
   public async findOne(email: string): Promise<User | null> {
     return this.usersRepository.findOne({
@@ -37,7 +35,7 @@ export class UsersService implements AUsersService {
   }
 
   public async create(
-    user: Pick<User, 'email' | 'password' | 'role'>,
+    user: Pick<User, 'name' | 'email' | 'password' | 'role'>,
   ): Promise<User> {
     return this.usersRepository.save(user);
   }

@@ -39,14 +39,8 @@ export class Post {
     example: 'John Doe',
     description: 'The author of the post',
   })
-  @ManyToOne(() => User, { nullable: false })
-  @JoinColumn({ name: 'authorId' })
-  author: Pick<User, 'id' | 'name'>;
-
-  @ApiHideProperty()
-  @Exclude()
-  @Column({ select: false })
-  authorId: string;
+  @Column({ length: 125 })
+  author: string;
 
   @ApiProperty({
     example: new Date(),
