@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppController } from '../app.controller';
+import { AppService } from '../app.service';
+import * as config from '@root/package.json';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -15,8 +16,11 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return a health check', () => {
+      expect(appController.getHealthCheck()).toStrictEqual({
+        name: config.name,
+        version: config.version,
+      });
     });
   });
 });

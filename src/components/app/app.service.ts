@@ -1,8 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import * as config from '@root/package.json';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  getHealthCheck() {
+    return {
+      name: config.name,
+      version: config.version,
+    };
   }
 }

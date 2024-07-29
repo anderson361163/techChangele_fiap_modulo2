@@ -57,7 +57,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           tags: fiap-blog:latest
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           outputs: type=docker,dest=/tmp/image.tar
 
       - name: Save to artifact

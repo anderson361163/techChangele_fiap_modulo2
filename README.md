@@ -35,14 +35,14 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 - [X] Persistência de Dados:
   - [X] Utilização de um sistema de banco de dados (por exemplo, MongoDB, PostgreSQL).
 - [X] Implementação de modelos de dados adequados para as postagens.
-- [ ] Containerização com Docker:
-  - [ ] Desenvolvimento e implantação usando contêineres Docker para garantir consistência entre ambientes de desenvolvimento e produção.
-- [ ] Automação com GitHub Actions:
-  - [ ] Configuração de workflows de CI/CD para automação de testes e deploy.
-- [ ] Documentação:
-  - [ ] Documentação técnica detalhada do projeto, incluindo setup inicial, arquitetura da aplicação e guia de uso das APIs.
-- [ ] Cobertura de Testes:
-  - [ ] O projeto deve garantir que pelo menos 30% do código seja coberto por testes unitários. Essa medida é essencial para assegurar a qualidade e a estabilidade do código, especialmente em funções críticas como criação, edição e exclusão de postagens.
+- [X] Containerização com Docker:
+  - [X] Desenvolvimento e implantação usando contêineres Docker para garantir consistência entre ambientes de desenvolvimento e produção.
+- [X] Automação com GitHub Actions:
+  - [X] Configuração de workflows de CI/CD para automação de testes e deploy.
+- [X] Documentação:
+  - [X] Documentação técnica detalhada do projeto, incluindo setup inicial, arquitetura da aplicação e guia de uso das APIs.
+- [X] Cobertura de Testes:
+  - [X] O projeto deve garantir que pelo menos 30% do código seja coberto por testes unitários. Essa medida é essencial para assegurar a qualidade e a estabilidade do código, especialmente em funções críticas como criação, edição e exclusão de postagens.
 - [X] **Todos os endpoints que modificam dados (POST, PUT, DELETE) devem incluir autenticação e autorização adequadas para garantir que apenas usuários autorizados (professores) possam realizar essas operações.**
 
 <aside>
@@ -74,6 +74,8 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+OR
+$ docker-compose up -d
 ```
 
 ## Test

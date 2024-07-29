@@ -1,12 +1,12 @@
 import * as Joi from 'joi';
 
 export const validationSchema = Joi.object({
-  PORT: Joi.number().default(3000),
+  PORT: Joi.number(),
   DATABASE_HOST: Joi.string().required(),
-  DATABASE_PORT: Joi.number().default(5432),
+  DATABASE_PORT: Joi.number(),
   DATABASE_USER: Joi.string().required(),
   DATABASE_PASSWORD: Joi.string().required(),
-  DATABASE_DATABASE: Joi.string().default('blog'),
+  DATABASE_DATABASE: Joi.string(),
   JWT_SECRET: Joi.string().required(),
-  JWT_EXPIRATION: Joi.string().default('1d'),
+  JWT_EXPIRATION: Joi.string(),
 });
