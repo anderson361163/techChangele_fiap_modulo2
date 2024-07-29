@@ -14,7 +14,10 @@ export class CreatePostDto {
   @MaxLength(10000)
   content: string;
 
-  @ApiHideProperty()
+  @ApiProperty()
+  @IsNotEmpty()
+  @MinLength(3)
+  @MaxLength(125)
   author: string;
 
   @ApiProperty()

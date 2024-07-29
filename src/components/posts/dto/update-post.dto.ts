@@ -30,6 +30,15 @@ export class UpdatePostDto {
     required: false,
   })
   @IsOptional()
+  @IsNotEmpty()
+  @MinLength(3)
+  @MaxLength(125)
+  author?: string;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsOptional()
   @IsBoolean()
   publish?: boolean;
 }
