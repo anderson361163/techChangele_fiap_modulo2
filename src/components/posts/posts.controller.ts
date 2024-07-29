@@ -32,6 +32,7 @@ import {
 } from '@nestjs/swagger';
 import { Post as PostEntity } from './post.entity';
 import { ApiPaginatedResponse } from '@common/pagination/pagination.decorator';
+import { SearchAdminPostDto } from '@components/posts/dto/search-admin-post.dto';
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -71,17 +72,26 @@ export class PostsController {
   })
   @ApiPaginatedResponse(PostEntity)
   public async searchPosts(@Req() req: Request, @Query() param: SearchPostDto) {
-    return this.postsService.search(param.query, req.pagination);
+    return this.postsService.searchPublished(req.pagination, param.query);
   }
 
   @Get('admin')
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
+  @ApiQuery({
+    name: 'query',
+    required: false,
+    type: String,
+    description: 'Optional search query',
+  })
   @Auth([Role.ADMIN])
   @ApiBearerAuth()
   @ApiPaginatedResponse(PostEntity)
-  public async getAdminPosts(@Req() req: Request) {
-    return this.postsService.findAll(req.pagination);
+  public async getAdminPosts(
+    @Req() req: Request,
+    @Query() param: SearchAdminPostDto,
+  ) {
+    return this.postsService.search(req.pagination, param.query);
   }
 
   @Get(':id')

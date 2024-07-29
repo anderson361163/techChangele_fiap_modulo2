@@ -1,20 +1,10 @@
-import { SearchPostDto } from '@components/posts/dto/search-post.dto';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
+import { SearchAdminPostDto } from '@components/posts/dto/search-admin-post.dto';
 
-describe('SearchPostDto', () => {
+describe('SearchAdminPostDto', () => {
   it.each([
-    [
-      {},
-      [
-        {
-          isNotEmpty: 'query should not be empty',
-          isString: 'query must be a string',
-          minLength: 'query must be longer than or equal to 3 characters',
-          maxLength: 'query must be shorter than or equal to 50 characters',
-        },
-      ],
-    ],
+    [{}, []],
     [
       { query: '' },
       [
@@ -34,7 +24,7 @@ describe('SearchPostDto', () => {
     ],
     [{ query: 'abc' }, []],
   ])('should validate SearchPostDto', async (inputData, expectedErrors) => {
-    const dto = plainToInstance(SearchPostDto, inputData);
+    const dto = plainToInstance(SearchAdminPostDto, inputData);
     const errors = await validate(dto);
 
     expect(errors.map((error) => error.constraints)).toEqual(expectedErrors);

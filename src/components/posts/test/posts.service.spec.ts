@@ -121,10 +121,13 @@ describe('PostsService', () => {
     await repository.save(posts);
 
     {
-      const found = await service.search('title³', {
-        page: 1,
-        limit: 10,
-      });
+      const found = await service.searchPublished(
+        {
+          page: 1,
+          limit: 10,
+        },
+        'title³',
+      );
 
       expect(found).toBeDefined();
       expect(found.data).toMatchObject([posts[2]]);
@@ -135,10 +138,13 @@ describe('PostsService', () => {
       });
     }
     {
-      const found = await service.search('content', {
-        page: 1,
-        limit: 10,
-      });
+      const found = await service.searchPublished(
+        {
+          page: 1,
+          limit: 10,
+        },
+        'content',
+      );
 
       expect(found).toBeDefined();
       expect(found.data).toMatchObject([posts[0], posts[2]]);
@@ -146,6 +152,40 @@ describe('PostsService', () => {
         page: 1,
         limit: 10,
         total: 2,
+      });
+    }
+    {
+      const found = await service.search(
+        {
+          page: 1,
+          limit: 10,
+        },
+        'content',
+      );
+
+      expect(found).toBeDefined();
+      expect(found.data).toMatchObject(posts);
+      expect(found.meta).toEqual({
+        page: 1,
+        limit: 10,
+        total: 3,
+      });
+    }
+    {
+      const found = await service.search(
+        {
+          page: 1,
+          limit: 10,
+        },
+        undefined,
+      );
+
+      expect(found).toBeDefined();
+      expect(found.data).toMatchObject(posts);
+      expect(found.meta).toEqual({
+        page: 1,
+        limit: 10,
+        total: 3,
       });
     }
   });
@@ -254,5 +294,22 @@ describe('PostsService', () => {
         publishedAt: expect.any(Date),
       });
     }
+  });
+
+  it('should delete a post', async () => {
+    const post = {
+      title: 'Post title',
+      content: 'Post content',
+      author: 'John Doe',
+    };
+    const { id } = await repository.save(post);
+
+    await service.delete(id);
+
+    const foundPost = await repository.findOneBy({
+      id,
+    });
+
+    expect(foundPost).toBeNull();
   });
 });

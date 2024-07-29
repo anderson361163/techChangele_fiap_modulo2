@@ -43,8 +43,11 @@ jobs:
         run: npm run test:cov
 
   build-docker:
-    name: Build Docker
+    name: Build Docker Image
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        platform: [linux/amd64, linux/arm64]
     needs: [lint, test]
     steps:
       - name: Check out code
@@ -57,11 +60,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           tags: fiap-blog:latest
-          platforms: linux/amd64
+          platforms: ${{ matrix.platform }}
           outputs: type=docker,dest=/tmp/image.tar
 
       - name: Save to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: image
+          name: image_${{ runner.arch }}.tar
           path: /tmp/image.tar

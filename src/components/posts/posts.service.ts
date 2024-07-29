@@ -54,8 +54,27 @@ export class PostsService {
   }
 
   async search(
-    query: string,
     pagination: IPagination,
+    query?: string,
+  ): Promise<IPaginatedData<Post>> {
+    return this._findAll(
+      query
+        ? [
+            {
+              title: ILike(`%${query}%`),
+            },
+            {
+              content: ILike(`%${query}%`),
+            },
+          ]
+        : [],
+      pagination,
+    );
+  }
+
+  async searchPublished(
+    pagination: IPagination,
+    query: string,
   ): Promise<IPaginatedData<Post>> {
     return this._findAll(
       [
@@ -97,6 +116,7 @@ export class PostsService {
     const tempPost = {
       title: post.title,
       content: post.content,
+      author: post.author,
       publishedAt: isDefined(post.publish)
         ? post.publish
           ? new Date()
