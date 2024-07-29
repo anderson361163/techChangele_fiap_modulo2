@@ -40,14 +40,14 @@ jobs:
         run: npm run build
 
       - name: Test
-        run: npm run test:cov
+        run: npm run test:ci-cov
 
       - name: Test
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           skip-step: 'all'
-          coverage-file: coverage/coverage-final.json
-          base-coverage-file: coverage/coverage-final.json
+          coverage-file: coverage/coverage.json
+          base-coverage-file: coverage/coverage.json
           output: report-markdown
 
       - name: Summary
