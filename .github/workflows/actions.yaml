@@ -42,15 +42,16 @@ jobs:
       - name: Test
         run: npm run test:ci-cov
 
-      - name: Test
+      - name: Generate Report
         uses: ArtiomTr/jest-coverage-report-action@v2
         with:
           skip-step: 'all'
+          annotations: 'none'
           coverage-file: coverage/coverage.json
           base-coverage-file: coverage/coverage.json
           output: report-markdown
 
-      - name: Summary
+      - name: Publish Summary
         run: echo '${{ steps.test.outputs.report }}' >> $GITHUB_STEP_SUMMARY
 
   build-docker:
