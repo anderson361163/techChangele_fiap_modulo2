@@ -80,7 +80,10 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "^src/(.*)": "<rootDir>/../src/$1"
+      "^src/(.*)": "<rootDir>/../src/$1",
+      "@/(.*)": "<rootDir>/../src/$1",
+      "@common/(.*)": "<rootDir>/../src/common/$1",
+      "@components/(.*)": "<rootDir>/../src/components/$1"
     }
   },
   "repository": {
