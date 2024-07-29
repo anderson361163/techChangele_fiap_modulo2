@@ -5,7 +5,12 @@ import { User } from './user.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  providers: [UsersService],
+  providers: [
+    {
+      provide: AUsersService,
+      useClass: UsersService,
+    },
+  ],
   exports: [
     {
       provide: AUsersService,

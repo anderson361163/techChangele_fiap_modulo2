@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -26,10 +26,10 @@ jobs:
     needs: lint
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
 
@@ -41,3 +41,27 @@ jobs:
 
       - name: Test
         run: npm run test:cov
+
+  build-docker:
+    name: Build Docker
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker
+        uses: docker/build-push-action@v6
+        with:
+          tags: fiap-blog:latest
+          platforms: linux/amd64,linux/arm64
+          outputs: type=docker,dest=/tmp/image.tar
+
+      - name: Save to artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: image
+          path: /tmp/image.tar

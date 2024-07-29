@@ -18,8 +18,8 @@ import {
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Request } from 'express';
-import { Auth } from '../common/decorators/role.decorator';
-import { Role } from '../common/enums/role.enum';
+import { Auth } from '@common/decorators/role.decorator';
+import { Role } from '@common/enums/role.enum';
 import { SearchPostDto } from './dto/search-post.dto';
 import {
   ApiBearerAuth,
@@ -31,7 +31,7 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { Post as PostEntity } from './post.entity';
-import { ApiPaginatedResponse } from '../common/pagination/pagination.decorator';
+import { ApiPaginatedResponse } from '@common/pagination/pagination.decorator';
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)

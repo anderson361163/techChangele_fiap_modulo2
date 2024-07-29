@@ -3,12 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { validationSchema as envValidationSchema } from './common/config/validator';
-import { PostsModule } from './posts/posts.module';
-import configuration from './common/config/configuration';
-import { AuthModule } from './auth/auth.module';
+import { validationSchema as envValidationSchema } from '@common/config/validator';
+import { PostsModule } from '@components/posts/posts.module';
+import configuration from '@common/config/configuration';
+import { AuthModule } from '@components/auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './common/guards/auth.guard';
+import { AuthGuard } from '@common/guards/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({

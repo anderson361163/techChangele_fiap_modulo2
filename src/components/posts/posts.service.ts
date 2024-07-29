@@ -7,7 +7,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import {
   IPaginatedData,
   IPagination,
-} from '../common/pagination/pagination.middleware';
+} from '@common/pagination/pagination.middleware';
 import { isDefined } from 'class-validator';
 
 @Injectable()

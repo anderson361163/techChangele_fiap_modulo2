@@ -13,8 +13,8 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request } from 'express';
-import { Role } from '../common/enums/role.enum';
-import { Auth } from '../common/decorators/role.decorator';
+import { Role } from '@common/enums/role.enum';
+import { Auth } from '@common/decorators/role.decorator';
 import { RegisterDto } from './dto/register.dto';
 import {
   ApiBasicAuth,

@@ -3,7 +3,7 @@ import { AuthService } from '../auth.service';
 import { AUsersService, UsersService } from '../../users/users.service';
 import { User } from '../../users/user.entity';
 import { Repository } from 'typeorm';
-import { Role } from '../../common/enums/role.enum';
+import { Role } from '@common/enums/role.enum';
 import { JwtService } from '@nestjs/jwt';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';

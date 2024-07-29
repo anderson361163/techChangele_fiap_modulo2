@@ -3,7 +3,7 @@ import { AUsersService, UsersService } from '../users.service';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
-import { Role } from '../../common/enums/role.enum';
+import { Role } from '@common/enums/role.enum';
 
 describe('UsersService', () => {
   let service: UsersService;
