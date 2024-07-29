@@ -20,8 +20,8 @@ COPY package*.json ./
 
 RUN npm install --only=production
 
-COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/dist/src ./dist
 
 EXPOSE 3000
 
-ENTRYPOINT ["node", "dist/main.js"]
+ENTRYPOINT ["npm", "run", "start:prod"]
