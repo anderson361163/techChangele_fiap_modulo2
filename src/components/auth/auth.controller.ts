@@ -21,6 +21,8 @@ import {
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiUnauthorizedResponse,
+  ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { AUsersService } from '../users/users.service';
 import { User as UserEntity } from '../users/user.entity';
@@ -38,6 +40,22 @@ export class AuthController {
   @ApiBasicAuth()
   @ApiOkResponse({
     description: 'User logged in, returns the access token',
+  })
+  @ApiUnprocessableEntityResponse({
+    description: 'Invalid auth header',
+    example: {
+      statusCode: 422,
+      message: 'Missing credentials',
+      error: 'Unprocessable Entity',
+    },
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid credentials',
+    example: {
+      statusCode: 401,
+      message: 'Invalid credentials',
+      error: 'Unauthorized',
+    },
   })
   async login(@Headers('Authorization') authorization: string) {
     if (!authorization || !authorization.startsWith('Basic ')) {

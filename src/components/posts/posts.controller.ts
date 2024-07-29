@@ -131,10 +131,18 @@ export class PostsController {
     description: 'Post updated',
     type: PostEntity,
   })
+  @ApiNotFoundResponse({
+    description: 'Post not found',
+  })
   public async updatePost(
     @Param() { id }: { id: string },
     @Body() post: UpdatePostDto,
   ) {
+    const postEntity = this.postsService.findOne(id);
+    if (!postEntity) {
+      throw new NotFoundException('Post not found');
+    }
+
     return this.postsService.update(id, post);
   }
 }
