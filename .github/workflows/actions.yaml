@@ -44,6 +44,7 @@ jobs:
 
       - name: Generate Report
         uses: ArtiomTr/jest-coverage-report-action@v2
+        id: coverage
         with:
           skip-step: 'all'
           annotations: 'none'
@@ -52,7 +53,7 @@ jobs:
           output: report-markdown
 
       - name: Publish Summary
-        run: echo '${{ steps.test.outputs.report }}' >> $GITHUB_STEP_SUMMARY
+        run: echo '${{ steps.coverage.outputs.report }}' >> $GITHUB_STEP_SUMMARY
 
   build-docker:
     name: Build Docker Image
