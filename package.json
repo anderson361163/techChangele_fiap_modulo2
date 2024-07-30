@@ -65,35 +65,6 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.3"
   },
-  "jest": {
-    "coverageThreshold": {
-      "global": {
-        "lines": 30
-      }
-    },
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node",
-    "moduleNameMapper": {
-      "^src/(.*)": "<rootDir>/../src/$1",
-      "@/(.*)": "<rootDir>/../src/$1",
-      "@root/(.*)": "<rootDir>/../$1",
-      "@common/(.*)": "<rootDir>/../src/common/$1",
-      "@components/(.*)": "<rootDir>/../src/components/$1"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anderson361163/techChangele_fiap_modulo2.git"

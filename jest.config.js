@@ -1,0 +1,28 @@
+const config = {
+  coverageThreshold: {
+    global: {
+      branches: 30,
+      functions: 30,
+      lines: 30,
+      statements: 30,
+    },
+  },
+  moduleFileExtensions: ['js', 'json', 'ts'],
+  rootDir: 'src',
+  testRegex: '.*\\.spec\\.ts$',
+  transform: {
+    '^.+\\.(t|j)s$': 'ts-jest',
+  },
+  collectCoverageFrom: ['**/*.(t|j)s'],
+  coverageDirectory: '../coverage',
+  testEnvironment: 'node',
+  moduleNameMapper: {
+    '^src/(.*)': '<rootDir>/../src/$1',
+    '@/(.*)': '<rootDir>/../src/$1',
+    '@root/(.*)': '<rootDir>/../$1',
+    '@common/(.*)': '<rootDir>/../src/common/$1',
+    '@components/(.*)': '<rootDir>/../src/components/$1',
+  },
+};
+
+module.exports = config;
