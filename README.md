@@ -1,5 +1,8 @@
 # Tech Challenge 02 - FIAP Blog
 
+## Acesso à documentação detalhada e demonstração de uso (video)
+[Google Drive](https://drive.google.com/drive/folders/1QijxbspnrMZKeb8-Zxw6bKx7RnHi27fB)
+
 ## Grupo 14 - Membros
 - RM353230 Anelise Estevam
 - RM355290 Anderson da Silva Machado 
@@ -51,9 +54,9 @@ Os seguintes endpoints REST serão implementados para a aplicação de blogging:
 
 ## Entrega
 
-- [ ] Código-Fonte: repositório GitHub com o código do projeto, incluindo Dockerfiles e scripts de CI/CD.
-- [ ] Apresentação Gravada: demonstração em vídeo do funcionamento da aplicação, incluindo detalhes técnicos de implementação.
-- [ ] Documentação: documento descrevendo a arquitetura do sistema, uso da aplicação e relato de experiências e desafios enfrentados pela equipe durante o desenvolvimento.
+- [X] Código-Fonte: repositório GitHub com o código do projeto, incluindo Dockerfiles e scripts de CI/CD.
+- [X] Apresentação Gravada: demonstração em vídeo do funcionamento da aplicação, incluindo detalhes técnicos de implementação.
+- [X] Documentação: documento descrevendo a arquitetura do sistema, uso da aplicação e relato de experiências e desafios enfrentados pela equipe durante o desenvolvimento.
 
 ---
 
