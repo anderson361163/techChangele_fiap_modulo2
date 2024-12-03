@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from '../auth.service';
-import { AUsersService, UsersService } from '../../users/users.service';
+import { AUserService, UserService } from '../../users/user.service';
 import { User } from '../../users/user.entity';
 import { Repository } from 'typeorm';
 import { Role } from '@common/enums/role.enum';
@@ -32,8 +32,8 @@ describe('AuthService', () => {
       providers: [
         AuthService,
         {
-          provide: AUsersService,
-          useClass: UsersService,
+          provide: AUserService,
+          useClass: UserService,
         },
         JwtService,
       ],

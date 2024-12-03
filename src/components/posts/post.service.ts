@@ -11,7 +11,7 @@ import {
 import { isDefined } from 'class-validator';
 
 @Injectable()
-export class PostsService {
+export class PostService {
   constructor(
     @InjectRepository(Post)
     private readonly postsRepository: Repository<Post>,

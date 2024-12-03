@@ -13,9 +13,9 @@ import { Role } from '../enums/role.enum';
 declare module 'express' {
   interface Request {
     user?: {
-      i: string;
-      e: string;
-      r: Role;
+      i: string; // User ID
+      e: string; // Email
+      r: Role; // Role
     };
   }
 }

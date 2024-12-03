@@ -24,7 +24,7 @@ import {
   ApiUnauthorizedResponse,
   ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
-import { AUsersService } from '../users/users.service';
+import { AUserService } from '../users/user.service';
 import { User as UserEntity } from '../users/user.entity';
 
 @Controller('auth')
@@ -32,7 +32,7 @@ import { User as UserEntity } from '../users/user.entity';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly usersService: AUsersService,
+    private readonly usersService: AUserService,
   ) {}
 
   @HttpCode(HttpStatus.OK)

@@ -1,4 +1,4 @@
-import { PostsService } from './posts.service';
+import { PostService } from './post.service';
 import {
   Body,
   ClassSerializerInterceptor,
@@ -36,8 +36,8 @@ import { SearchAdminPostDto } from '@components/posts/dto/search-admin-post.dto'
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
-export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+export class PostController {
+  constructor(private readonly postsService: PostService) {}
 
   // TODO:
   // - Error handling

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing';
-import { PostsService } from '../posts.service';
+import { PostService } from '../post.service';
 import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { Post } from '../post.entity';
 import { Repository } from 'typeorm';
 
 describe('PostsService', () => {
-  let service: PostsService;
+  let service: PostService;
   let repository: Repository<Post>;
 
   beforeEach(async () => {
@@ -22,10 +22,10 @@ describe('PostsService', () => {
         }),
         TypeOrmModule.forFeature([Post]),
       ],
-      providers: [PostsService],
+      providers: [PostService],
     }).compile();
 
-    service = module.get<PostsService>(PostsService);
+    service = module.get<PostService>(PostService);
     repository = module.get<Repository<Post>>(getRepositoryToken(Post));
   });
 
