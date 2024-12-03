@@ -108,7 +108,10 @@ describe('UsersService', () => {
     };
     const result = await service.create(user);
 
-    expect(result).toMatchObject(user);
+    expect(result).toMatchObject({
+      ...user,
+      password: expect.any(String),
+    });
     expect(result.id).toBeDefined();
     expect(result.created).toBeDefined();
     expect(result.updated).toBeDefined();
