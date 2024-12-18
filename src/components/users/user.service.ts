@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
@@ -14,7 +14,7 @@ export abstract class AUserService {
   ): Promise<User>;
   abstract update(
     id: string,
-    user: Pick<User, 'name' | 'email' | 'password' | 'role'>,
+    update: Partial<Pick<User, 'name' | 'email' | 'password'>>,
   ): Promise<UpdateResult>;
   abstract delete(id: string): Promise<DeleteResult>;
 }
@@ -59,11 +59,26 @@ export class UserService extends AUserService {
     return this.usersRepository.save({ ...user, password: hash });
   }
 
-  public async update(id: string, user: User): Promise<UpdateResult> {
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(user.password, salt);
+  public async update(
+    id: string,
+    update: Partial<Pick<User, 'name' | 'email' | 'password'>>,
+  ): Promise<UpdateResult> {
+    const user = await this.findById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
-    return this.usersRepository.update(id, { ...user, password: hash });
+    const data: Partial<Pick<User, 'name' | 'email' | 'password'>> = {
+      ...(update.name && { name: update.name }),
+      ...(update.email && { email: update.email }),
+    };
+    if (update.password) {
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(user.password, salt);
+      data.password = hash;
+    }
+
+    return this.usersRepository.update(id, data);
   }
 
   public async delete(id: string): Promise<DeleteResult> {

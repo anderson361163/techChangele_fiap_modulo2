@@ -29,6 +29,7 @@ import { ApiPaginatedResponse } from '@common/pagination/pagination.decorator';
 import { SearchUserDto } from '@components/users/dto/search-user.dto';
 import { Request } from 'express';
 import { RegisterDto as CreateUserDto } from '@components/auth/dto/register.dto';
+import { UpdateUserDto } from '@components/users/dto/update-user.dto';
 
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -83,7 +84,7 @@ export class UserController {
   @ApiBearerAuth()
   async updateUser(
     @Param() { id }: { id: string },
-    @Body() updateUserDto: CreateUserDto,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
     await this.userService.update(id, updateUserDto);
   }
